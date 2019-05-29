@@ -1,0 +1,616 @@
+priority -50
+
+###########################################################################
+#                            TextMate Snippets                            #
+###########################################################################
+snippet ife "Conditional if..else (ife)"
+if ($1) {
+	${2:# body...}
+}
+else {
+	${3:# else...}
+}
+
+endsnippet
+
+snippet perl "perl header"
+#!/usr/bin/env perl
+use Modern::Perl;
+use Data::Dumper;
+use IO::All -utf8;
+use Cwd qw(abs_path);
+use FindBin qw($Bin $Script);
+use Getopt::Long::Descriptive;
+use File::Basename qw(basename dirname);
+use utf8;
+use JSON;
+
+endsnippet
+
+snippet mojo "Mojo::UserAgent"
+use Mojo::UserAgent;
+use Mojo::DOM;
+my $ua = Mojo::UserAgent->new;
+my $$1 = $ua->get('$2')->result;
+endsnippet
+
+snippet read_csv "read csv file using Text::CSV"
+sub read_csv {
+	my ($file) = @_;
+
+	use Text::CSV;
+	my $csv = Text::CSV->new ( { binary => 1 } ) or die "Cannot use CSV: " . Text::CSV->error_diag ();
+	open my $fh, "<:encoding(utf8)", "$file" or die ": $!";
+	my $content = {};
+	my $id = 0;
+	while ( my $row = $csv->getline( $fh ) ) {
+		chomp $row;
+		$content->{ $id } = $row;
+		$id ++;
+	}
+	$csv->eof or $csv->error_diag();
+	close $fh;
+	return $content;
+}
+endsnippet
+
+snippet db_init "Create database using DBI"
+use DBI;
+my $driver   = "Pg";
+my $database = "$1";
+my $dsn = "DBI:$driver:dbname=$database;host=127.0.0.1;port=5432";
+my $userid = "postgres";
+my $password = "123456";
+my $dbh = DBI->connect($dsn, $userid, $password, { RaiseError => 1 })
+or die $DBI::errstr;
+say "Opened database successfully";
+
+my $$2 = qq(
+	$3;
+);
+sub run_or_error {
+	my ( $cmd ) = @_;
+	my $rv = $dbh->do($cmd) or die $DBI::errstr;
+	if ($rv < 0){
+		say $DBI::errstr;
+	}else{
+		my $key = (split /\(/, $cmd);
+		say "$key: ok!";
+	}
+}
+sub check_id_exists {
+	my ($tb, $id) = @_ ;
+	my $ua = Mojo::UserAgent->new;
+	$tb = lc $tb;
+	my $key = "$4";
+	my $url = "http://localhost:3000/$tb?$key=eq.$id";
+	my $error = $ua->get( $url )->result->error;
+	my $result = (defined $error) ? 0 : 1;
+	return $result;
+}
+endsnippet
+
+snippet mce_loop "parallel in Perl"
+use MCE::Loop;
+MCE::Loop::init {
+	max_workers => 6, chunk_size => "auto"
+};
+my %$1 = mce_loop {
+	my ($mce, $chunk_ref, $chunk_id) = @_;
+	my %tmp;
+	for my $item (@{ $chunk_ref }) {
+	}
+	MCE->gather(%tmp);
+} \@$2;
+endsnippet
+
+snippet mce_loop_f "dealing file in Parallel"
+use MCE::Loop;
+MCE::Loop::init {
+	max_workers => 6, chunk_size => "auto"
+};
+my %$1 = mce_loop_f {
+	my ($mce, $chunk_ref, $chunk_id) = @_;
+	my %tmp;
+	for my $item (@{ $chunk_ref }) {
+	}
+	MCE->gather(%tmp);
+} $$2;
+endsnippet
+
+snippet getopt "Get Options"
+my ($opt, $usage) = describe_options(
+	'$1 %o <some-arg>',
+	[ '$2|$3=s',   "$4", { required => 1 } ],
+	[],
+	[ '$5|$6=s',   "$7", { default => "$8" } ],
+	[],
+	[ 'verbose|v',  "print extra stuff"            ],
+	[ 'help',       "print usage message and exit", { shortcircuit => 1 } ],
+);
+print($usage->text), exit if $opt->help;
+
+my $$2 = $opt->$2;
+my $$5 = $opt->$5;
+endsnippet
+
+
+snippet pod "Pod::Useage"
+
+=head1 SYNOPSIS
+
+$1( A one-line description of what your program or module does (purportedly) ).
+
+=head1 DESCRIPTION
+
+$2 The bulk of your documentation. (Bulk is good in this context.)
+
+=head1 AUTHOR
+
+sumin U<sumin@cheerlandgroup.com>
+
+=head1 BUGS
+
+=item `date +%Y-%m-%d`
+
+$3
+
+=item $4
+
+$5
+
+=head1 SEE ALSO
+
+$6
+
+=head1 COPYRIGHT
+
+Copyright 2017, CheerLand.  All Rights Reserved.
+
+=cut
+
+endsnippet
+
+snippet log "Log using Log4perl"
+use Log::Log4perl qw(:easy);
+mkdir "$outdir/log";
+$Script =~s/\.pl$//g;
+Log::Log4perl->easy_init(·
+	{ level    => $INFO,
+		file     => ">$outdir/log/$Script.cmd.sh",
+		category => "Log::INFO",
+		layout   => '[%d] %m%n' },
+
+	{ level    => $INFO,
+		file     => "STDOUT",
+		category => "Log::Stdout",
+		layout   => '[%d] %F: %m%n' },
+
+	{ level    => $ERROR,
+		file     => ">$outdir/log/$Script.error.log",
+		category => "Log::Error",
+		layout   => '[%d] %F %L: %m%n' },
+);
+
+my $log_info = Log::Log4perl::get_logger("Log::INFO");
+my $log_stdout = Log::Log4perl::get_logger("Log::Stdout");
+my $log_error = Log::Log4perl::get_logger("Log::Error");
+
+endsnippet
+
+snippet fio "For Loop in IO::All"
+for my $line ( io($1)->chomp->getlines ){
+	my @lines = split /$2/, $line;
+}
+endsnippet
+
+snippet runordie "Run or Die in Log"
+use IPC::Run qw(run);
+sub run_or_die {
+	my ( $sh, $line) = @_;
+	my $err;
+	run [ '/bin/sh' ], \$sh, ">", \$err ;
+	$log_info->info($sh);
+	$log_stdout->info("$line ----- \n$sh");
+	if ( $err =~/ERROR/i ){
+		$log_error->error( "\nLine $line: $err" );
+		$log_stdout->error( "\nLine $line: $err" );
+	}
+}
+endsnippet
+
+snippet ifee "Conditional if..elsif..else (ifee)"
+if ($1) {
+	${2:# body...}
+}
+elsif ($3) {
+	${4:# elsif...}
+}
+else {
+	${5:# else...}
+}
+
+endsnippet
+
+snippet imap "map from File IO"
+my %$1 = map { my ($2, $3) = split /\s+/; $2 => $3 } io($4)->chomp->getlines;
+endsnippet
+
+snippet rcsv "Read text from csv files"
+use Text::CSV;
+my $csv = Text::CSV->new ( { binary => 1 } ) or die "Cannot use CSV: " . Text::CSV->error_diag ();
+open my $fh, "<:encoding(utf8)", "$1" or die "$1: $!";
+while ( my $row = $csv->getline( $fh ) ) {
+	$row->[2] =~ m/pattern/ or next; # 3rd field should match
+}
+$csv->eof or $csv->error_diag();
+close $fh;
+endsnippet
+
+snippet xunless "Conditional one-line (unless)"
+${1:expression} unless ${2:condition};
+
+endsnippet
+
+snippet xif "Conditional one-line (xif)"
+${1:expression} if ${2:condition};
+
+endsnippet
+
+snippet sub "Function (sub)"
+sub ${1:function_name} {
+	${2:# body...}
+}
+
+endsnippet
+
+snippet xfore "Loop one-line (xforeach)"
+${1:expression} foreach @${2:array};
+
+endsnippet
+
+snippet xwhile "Loop one-line (xwhile)"
+${1:expression} while ${2:condition};
+
+endsnippet
+
+snippet test "Test"
+#!/usr/bin/env perl -w
+
+use strict;
+use Test::More tests => ${1:1};
+use ${2:ModuleName};
+
+ok(${3:assertion});
+
+endsnippet
+
+snippet class "class"
+package ${1:ClassName};
+
+${2:use parent qw(${3:ParentClass});}${2/.+/\n\n/}sub new {
+	my $class = shift;
+	$class = ref $class if ref $class;
+	my $self = bless {}, $class;
+	$self;
+}
+
+1;
+
+endsnippet
+
+snippet eval "eval"
+local $@;
+eval {
+	${1:# do something risky...}
+};
+if (my $${2:exception} = $@) {
+	${3:# handle failure...}
+}
+
+endsnippet
+
+snippet for "for"
+for (my $${1:var} = 0; $$1 < ${2:expression}; $$1++) {
+	${3:# body...}
+}
+
+endsnippet
+
+snippet fore "foreach"
+foreach ${1:my $${2:x}} (@${3:array}) {
+	${4:# body...}
+}
+
+endsnippet
+
+snippet if "if"
+if ($1) {
+	${2:# body...}
+}
+
+endsnippet
+
+snippet slurp "slurp"
+my $${1:var} = do { local $/ = undef; open my $fh, '<', ${2:$file}; <$fh> };
+
+endsnippet
+
+snippet unless "unless"
+unless ($1) {
+	${2:# body...}
+}
+
+endsnippet
+
+snippet while "while"
+while ($1) {
+	${2:# body...}
+}
+
+endsnippet
+
+snippet until "until"
+until ($1) {
+	${2:# body...}
+}
+
+endsnippet
+
+snippet update_pg_table "update pg table using csv file"
+sub update_pg_table {
+	my ($file, $table) = @_;
+	my $text = &read_csv($file);
+	my ($cmd, $header) ;
+	for my $id ( sort { $a <=> $b } keys %{$text} ){
+		my @lines = @{ $text->{$id} };
+		chomp @lines;
+		if ( $id == 0 ){
+			$header = join ",", map { $_ =~s/\s/_/g ; $_ = lc $_; qq("$_") } @lines;
+			next;
+		}
+		my @values = map {
+			$_=~s/^\s|\s$//g; $_=~s/\'//g;
+			if ( $_ eq ''){ $_ = "NULL"} else{ $_ = qq('$_')};
+			$_} @lines;
+		my $value = join ',', @values;
+		$cmd .= qq(
+			INSERT INTO $table ($header) values ($value);
+		);
+}
+&run_or_error($cmd);
+}
+
+sub read_csv {
+	my ($file) = @_;
+
+	use Text::CSV;
+	my $csv = Text::CSV->new ( { binary => 1 } ) or die "Cannot use CSV: " . Text::CSV->error_diag ();
+	open my $fh, "<:encoding(utf8)", "" or die ": $!";
+	my $content = {};
+	my $id = 0;
+	while ( my $row = $csv->getline( $fh ) ) {
+		chomp $row;
+		$content{ $id } = $row;
+		$id ++;
+	}
+	$csv->eof or $csv->error_diag();
+	close $fh;
+	return $content;
+}
+endsnippet
+
+snippet create_pg_table "create pg table"
+my $table = qq(
+	CREATE TABLE $1 (
+		$2     	text,
+		$3  		text,
+		$4  		text not null
+	);
+);
+endsnippet
+
+snippet create_pg_view "create pg materialized view"
+my $view = qq(
+	CREATE MATERIALIZED VIEW $1 AS (
+		$2;
+	);
+);
+endsnippet
+
+snippet create_pg_function "create pg function"
+my $function = qq(
+	CREATE FUNCTION $1 ($2) RETURNS $3 AS \$\$
+	DECLARE
+		$4;
+	BEGIN
+	RETURN $5;
+	END \$\$ LANGUAGE PLPGSQL;
+);
+endsnippet
+
+snippet package "create package use Moose"
+package $1;
+use Moose;
+use Carp 'croak';
+use namespace::autoclean;
+
+=pod
+
+=head1 SYNOPSIS
+
+	...
+
+=function
+
+function description
+
+=method method
+
+method description
+
+=attr
+
+attr description
+
+=head1 SEE ALSO
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
+
+1;
+endsnippet
+
+snippet has "attritute in package"
+has '$1' => (
+	is       => '$2',
+	isa      => '$3',
+	required => $4,
+);
+
+endsnippet
+
+snippet coerce "coerce in attritute of package"
+subtype '$1',
+	as '$2';
+coerce '$3',
+	from '$4',
+	via { $5 };
+endsnippet
+
+snippet testing "tests in perl module"
+#!/usr/bin/env perl
+use Modern::Perl;
+use Test::More;
+use Try::Tiny;
+use Carp qw(croak carp confess);
+
+require_ok( '$1' );
+ok( $got eq $expected, $test_name);
+is( $got, $expect, $test_name);
+like( $got, qr/expected/, $test_name );
+cmp_ok( $got, '==', $expected, $test_name );
+can_ok($module, @methods);
+isa_ok($object, $class);
+
+done_testing();
+endsnippet
+
+snippet mopt "MooseX::Getopt"
+with 'MooseX::Getopt';
+endsnippet
+
+snippet run-test-class "run-test-class.t"
+#!/usr/bin/env perl -T
+use Test::Class::Load 't/lib';
+Test::Class->runtests;
+endsnippet
+
+snippet run-test-class-moose "run-test-class-moose.t"
+#!/usr/bin/env perl -T
+use Test::Class::Moose::Load './lib';
+use Test::Class::Moose::Runner;
+Test::Class::Moose::Runner->new->runtests;
+endsnippet
+
+snippet role "Moose::Role"
+#!/usr/bin/env perl -T
+package $1;
+# ABSTRACT: $2
+
+use Moose::Role;
+use Carp 'croak';
+use namespace::autoclean;
+
+=pod
+
+=head1 SYNOPSIS
+
+	...
+
+=function
+
+function description
+
+=method method
+
+method description
+
+=attr
+
+attr description
+
+=head1 SEE ALSO
+
+
+=cut
+
+1;
+endsnippet
+
+snippet test-class "Test::Class template"
+package Test::$1;
+
+use Test::Most;
+use base 'Test::Class';
+
+sub class { '$1' }
+
+sub startup : Tests(startup => 1) {
+	my $test = shift;
+	use_ok $test->class;
+}
+
+sub constructor : Tests(3) {
+	my $test  = shift;
+	my $class = $test->class;
+	can_ok $class, 'new';
+	my %args = (
+		$2 => "",
+	);
+	my $object = $test->class->new(%args);
+	isa_ok $object, $class, '... and the object it returns';
+	is $object->$2, $args{$2}, '... and the attritutes should be correct';
+}
+
+sub $3 : Tests {
+	my $test   = shift;
+	my $object = $test->class->new;
+	can_ok $object, '$3';
+	is , '... ';
+	throws_ok { $object->$4 }
+		qr//,
+		'... ';
+}
+
+1;
+endsnippet
+
+snippet test-class-moose "Test::Class::Moose template"
+package TestsFor::$1;
+use Test::Class::Moose;
+use $1;
+
+sub test_constructor {
+	my $test = shift;
+
+	can_ok '$1', 'new';
+	my %args = (
+			$2  => $3,
+	);
+	isa_ok my $date = $1->new(%args), '$1';
+	is $date->$2, $args{$2}, '... and the year should be correct';
+}
+
+sub test_method {
+	my $test = shift;
+	my $instance = $test->class->new;
+	can_ok $instance, 'method';
+	is_ok $a, $b, '... is succeed';
+	throw_ok {} qr//, '... is ';
+}
+
+1;
+endsnippet
+
+# vim:ft=snippets:

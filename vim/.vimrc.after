@@ -1,0 +1,20 @@
+"change default colorscheme to gruvbox
+let g:yadr_disable_solarized_enhancements = 1
+colorscheme gruvbox
+
+
+"to avoid interactive zsh suspend vim
+if executable('zsh')
+  set shell=/usr/bin/zsh\ -l
+endif
+
+
+"use supertab to solve conflict for tab
+"make YCM compatible with UltiSnips
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+"better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
