@@ -1,5 +1,6 @@
 "change default colorscheme to gruvbox
 let g:yadr_disable_solarized_enhancements = 1
+set colorcolumn=81
 colorscheme gruvbox
 
 
