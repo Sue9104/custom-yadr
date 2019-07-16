@@ -594,10 +594,10 @@ endsnippet
 # Try / Except / Finally #
 ##########################
 snippet try "Try / Except" b
-try:
-	${1:${VISUAL:pass}}
-except ${2:Exception} as ${3:e}:
-	${4:raise $3}
+	try:
+		${1:${VISUAL:pass}}
+	except ${2:Exception} as ${3:e}:
+		${4:raise $3}
 endsnippet
 
 snippet trye "Try / Except / Else" b
@@ -739,7 +739,7 @@ if __name__ == '__main__':
 	main()
 endsnippet
 
-snippet docs "doc in the begining of script"
+snippet docs "doc for script"
 """Example Google style docstrings.
 
 description about scripts
@@ -763,7 +763,7 @@ Todo:
 """
 endsnippet
 
-snippet docs_f "function with docs"
+snippet docs_f "docs for function"
 	"""Example function with types documented in the docstring.
 
 	function description
@@ -775,12 +775,39 @@ snippet docs_f "function with docs"
 	Returns:
 			bool: The return value. True for success, False otherwise.
 
+	Yields:
+			int: The next number in the range of 0 to `n` - 1
+			works for generator
+
 	Raises:
 		AttributeError: The ``Raises`` section is a list of all exceptions
 		ValueError: If `param2` is equal to `param1`.
 
+	Examples:
+			>>> print([i for i in example_generator(4)])
+			[0,1,2,3]
+
 	.. _PEP 484:
 			https://www.python.org/dev/peps/pep-0484/
+
+	"""
+endsnippet
+
+snippet docs_c "docs for class"
+	"""Summary line for a class
+
+	class description
+
+	Attributes:
+		attr1 (str): Description
+		attr2 (int, optional): Description
+
+	Todo:
+		* a1
+		* a2
+
+	.. _Google Python Style Guide:
+		http://google.github.io/styleguide/pyguide.html
 
 	"""
 endsnippet
@@ -916,7 +943,7 @@ def cleanup_files_on_failure(task, exception):
 endsnippet
 
 snippet time "get current time"
-import time
-now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+	import time
+	now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 endsnippet
 # vim:ft=snippets:
