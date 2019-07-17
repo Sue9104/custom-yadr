@@ -6,10 +6,10 @@ install: yadr vim python docker
 .PHONY: install yadr vim python rust r perl docker
 
 define youcompleteme
-	if [ ! -d $$HOME/bundle/YouCompleteMe/ ]; then \
-		git clone git@github.com:Valloric/YouCompleteMe.git $$HOME/bundle/YouCompleteMe/;\
+	if [ ! -d $$HOME/.vim/bundle/YouCompleteMe/ ]; then \
+		git clone git@github.com:Valloric/YouCompleteMe.git $$HOME/.vim/bundle/YouCompleteMe/;\
 	fi;
-  cd $$HOME/bundle/YouCompleteMe/ && git submodule update --init --recursive && python install.py
+  cd $$HOME/.vim/bundle/YouCompleteMe/ && git submodule update --init --recursive && python install.py
 endef
 
 define miniconda
@@ -32,6 +32,8 @@ yadr:
 
 vim: yadr
 	\cp vim/.vim* vim/.editorconfig	$$HOME/
+	\cp vim/vundles.vim $$HOME/.vim/
+	\sed -i '/neocomplete/d; /snipmate/d' $$HOME/.vim/vundles/*vundle
 	\cp vim/vim-enhancements.vundle $$HOME/.vim/vundles/
 	\cp vim/snips/* $$HOME/.vim/bundle/vim-snippets/UltiSnips/
 	$(call youcompleteme)
@@ -47,7 +49,7 @@ rust:
 	\cp config/cargo.config $$HOME/.cargo/config
 	$$HOME/.cargo/bin/rustup install stable && $$HOME/.cargo/bin/rustup default stable
 	$$HOME/.cargo/bin/rustup component add rust-src
-	cd $$HOME/bundle/YouCompleteMe/ && git submodule update --init --recursive && python install.py --rust-completer
+	cd $$HOME/.vim/bundle/YouCompleteMe/ && git submodule update --init --recursive && python install.py --rust-completer
 
 perl:
 	if [ "$(PLATFORM)" == "Linux" ]; then \
