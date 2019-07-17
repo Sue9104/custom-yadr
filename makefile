@@ -36,6 +36,7 @@ vim: yadr
 	\sed -i '/neocomplete/d; /snipmate/d' $$HOME/.vim/vundles/*vundle
 	\cp vim/vim-enhancements.vundle $$HOME/.vim/vundles/
 	\cp vim/snips/* $$HOME/.vim/bundle/vim-snippets/UltiSnips/
+	\cp vim/global_extra_conf.py $$HOME/
 	$(call youcompleteme)
 	vim +PluginInstall +qall
 
