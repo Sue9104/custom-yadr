@@ -715,19 +715,19 @@ endsnippet
 snippet setup "setup.py"
 from setuptools import setup, find_packages
 setup(
-	name='MyApp',				# 应用名
-	version='1.0',				# 版本号
-	packages=find_packages(),	# 包括在安装包内的Python包
-	long_description=__doc__,	# 从代码中获取文档注释
-	include_package_data=True,	 # 启用清单文件MANIFEST.in
+	name='MyApp',
+	version='1.0',
+	packages=find_packages(),
+	long_description=__doc__,
+	include_package_data=True,
 	exclude_package_date={'':['.gitignore']},
-	install_requires=[			# 依赖列表
+	install_requires=[
 			'Flask-SQLAlchemy>=1.5,<=2.1'
 	],
 
 	description = "This is a sample package",
 	keywords = "hello world example",
-	url = "http://example.com/HelloWorld/",   # 项目主页
+	url = "http://example.com/HelloWorld/",
 	license = "MIT",
 	author = "Min Su",
 	author_email = "minsu@singleragenomics.com",
@@ -757,9 +757,6 @@ Todo:
 	* For module TODOs
 	* You have to also use ``sphinx.ext.todo`` extension
 
-.. _Google Python Style Guide:
-	http://google.github.io/styleguide/pyguide.html
-
 """
 endsnippet
 
@@ -787,9 +784,6 @@ snippet docs_f "docs for function"
 			>>> print([i for i in example_generator(4)])
 			[0,1,2,3]
 
-	.. _PEP 484:
-			https://www.python.org/dev/peps/pep-0484/
-
 	"""
 endsnippet
 
@@ -805,9 +799,6 @@ snippet docs_c "docs for class"
 	Todo:
 		* a1
 		* a2
-
-	.. _Google Python Style Guide:
-		http://google.github.io/styleguide/pyguide.html
 
 	"""
 endsnippet
