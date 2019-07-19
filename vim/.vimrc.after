@@ -19,3 +19,28 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+" YouCompleteMe for python
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_python_interpreter_path = '$HOME/miniconda/envs/test3/bin/python'
+let g:ycm_python_sys_path = [
+\  '$HOME/miniconda/envs/test3/lib/python3.7/site-packages'
+\]
+let g:ycm_extra_conf_vim_data = [
+  \  'g:ycm_python_interpreter_path',
+  \  'g:ycm_python_sys_path'
+  \]
+let g:ycm_global_ycm_extra_conf = '$HOME/global_extra_conf.py'
+
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_python_checkers = ['$HOME/miniconda/envs/test3/bin/pylint']
+

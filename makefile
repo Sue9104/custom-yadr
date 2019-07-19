@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 PLATFORM := $(shell uname)
 all: install update
-install: yadr vim python docker
+install: yadr python docker vim
 
 .PHONY: install yadr vim python rust r perl docker
 
@@ -9,6 +9,7 @@ define youcompleteme
 	if [ ! -d $$HOME/.vim/bundle/YouCompleteMe/ ]; then \
 		git clone git@github.com:Valloric/YouCompleteMe.git $$HOME/.vim/bundle/YouCompleteMe/;\
 	fi;
+	git config http.proxy http://127.0.0.1:12333
   cd $$HOME/.vim/bundle/YouCompleteMe/ && git submodule update --init --recursive && python install.py
 endef
 
@@ -35,13 +36,16 @@ vim: yadr
 	\cp vim/vundles.vim $$HOME/.vim/
 	\sed -i '/neocomplete/d; /snipmate/d' $$HOME/.vim/vundles/*vundle
 	\cp vim/vim-enhancements.vundle $$HOME/.vim/vundles/
-	\cp vim/snips/* $$HOME/.vim/bundle/vim-snippets/UltiSnips/
-	\cp vim/global_extra_conf.py $$HOME/
 	$(call youcompleteme)
 	vim +PluginInstall +qall
+	\cp vim/snips/* $$HOME/.vim/bundle/vim-snippets/UltiSnips/
+	\cp vim/global_extra_conf.py $$HOME/
 
 python:
 	$(call miniconda)
+	[ -d $$HOME/miniconda/envs/test3/ ] || $$HOME/miniconda/bin/conda create -y -n test3 python=3
+	source $$HOME/miniconda/bin/activate test3 && \
+		pip install -r config/python.packages
 	\cp zsh.after/python.zsh $$HOME/.zsh.after/
 
 rust:
