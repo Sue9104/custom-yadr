@@ -27,6 +27,7 @@ endef
 
 
 yadr:
+	git submodule update --init --recursive
 	chmod +x yadr/install.sh && ./yadr/install.sh
 	[ -d $$HOME/.zsh.after ] || mkdir $$HOME/.zsh.after
 	\cp zsh.after/alias.zsh zsh.after/appearance.zsh $$HOME/.zsh.after/
