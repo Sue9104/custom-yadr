@@ -18,15 +18,20 @@ define miniconda
 		wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh ;\
 		wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh ;\
 		if [ "$(PLATFORM)" == "Linux" ]; then \
-			bash Miniconda3-latest-Linux-x86_64.sh -b -p $$HOME/miniconda ; \
+			bash Miniconda3-latest-Linux-x86_64.sh -b -f -p $$HOME/miniconda ; \
 		else \
-			bash Miniconda3-latest-MacOSX-x86_64.sh -b -p $$HOME/miniconda ; \
+			bash Miniconda3-latest-MacOSX-x86_64.sh -b -f -p $$HOME/miniconda ; \
 		fi;\
 	fi;
 endef
 
 
 yadr:
+	if [ "$(PLATFORM)" == "Linux" ]; then \
+		sudo apt install git rake zsh;\
+	else \
+		sudo brew install git rake zsh;\
+	fi;
 	git submodule update --init --recursive
 	chmod +x yadr/install.sh && ./yadr/install.sh
 	[ -d $$HOME/.zsh.after ] || mkdir $$HOME/.zsh.after
