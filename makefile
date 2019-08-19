@@ -39,8 +39,8 @@ yadr:
 
 vim: yadr
 	\cp vim/.vim* vim/.editorconfig	$$HOME/
-	[ -d $$HOME/.vim/ ] || mkdir $$HOME/.vim/
-	\cp vim/vundles.vim $$HOME/.vim/ $$HOME/.vim/vundles/
+	[ -d $$HOME/.vim/ ] || mkdir $$HOME/.vim/ /home/minsu/.vim/vundles/
+	\cp vim/vundles.vim $$HOME/.vim/
 	\sed -i '/neocomplete/d; /snipmate/d' $$HOME/.vim/vundles/*vundle
 	\cp vim/vim-enhancements.vundle $$HOME/.vim/vundles/
 	$(call youcompleteme)
