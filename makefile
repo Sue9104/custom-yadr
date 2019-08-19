@@ -87,7 +87,7 @@ docker:
     sudo apt-get install docker-ce docker-ce-cli containerd.io ;\
     sudo groupadd docker && sudo usermod -aG docker $$(who am i| awk '{print \$1}');\
 		echo "please read https://docs.docker.com/compose/install/ for details";\
-    sudo curl -L https://github.com/docker/compose/releases/download/1.24/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose ;\
+    sudo curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$$(uname -s)-$$(uname -m) -o /usr/local/bin/docker-compose ;\
     sudo chmod +x /usr/local/bin/docker-compose ;\
 	else \
 		echo "please read https://docs.docker.com/docker-for-mac/install/ for details"; \
