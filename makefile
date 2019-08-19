@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 PLATFORM := $(shell uname)
 all: install update
-install: yadr python docker vim
+install: yadr python docker
 
 .PHONY: install yadr vim python rust r perl docker
 
@@ -40,7 +40,7 @@ yadr:
 vim: yadr
 	\cp vim/.vim* vim/.editorconfig	$$HOME/
 	[ -d $$HOME/.vim/ ] || mkdir $$HOME/.vim/
-	\cp vim/vundles.vim $$HOME/.vim/
+	\cp vim/vundles.vim $$HOME/.vim/ $$HOME/.vim/vundles/
 	\sed -i '/neocomplete/d; /snipmate/d' $$HOME/.vim/vundles/*vundle
 	\cp vim/vim-enhancements.vundle $$HOME/.vim/vundles/
 	$(call youcompleteme)
