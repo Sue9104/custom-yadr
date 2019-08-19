@@ -9,8 +9,8 @@ define youcompleteme
 	if [ ! -d $$HOME/.vim/bundle/YouCompleteMe/ ]; then \
 		git clone git@github.com:Valloric/YouCompleteMe.git $$HOME/.vim/bundle/YouCompleteMe/;\
 	fi;
-	git config http.proxy http://127.0.0.1:12333
-  cd $$HOME/.vim/bundle/YouCompleteMe/ && git submodule update --init --recursive && python install.py
+	#git config http.proxy http://127.0.0.1:12333
+  cd $$HOME/.vim/bundle/YouCompleteMe/ && git submodule update --init --recursive && python3 install.py
 endef
 
 define miniconda
@@ -28,11 +28,11 @@ endef
 
 yadr:
 	if [ "$(PLATFORM)" == "Linux" ]; then \
-		sudo apt install git rake zsh;\
+		sudo apt install git rake zsh cmake python3-dev ;\
 	else \
-		sudo brew install git rake zsh;\
+		sudo brew install git rake zsh cmake python3-dev ;\
 	fi;
-	chmod +x yadr/install.sh && ./yadr/install.sh
+	chmod +x yadr/install.sh && sh yadr/install.sh
 	cd $$HOME/.yadr && git submodule update --init --recursive
 	[ -d $$HOME/.zsh.after ] || mkdir $$HOME/.zsh.after
 	\cp zsh.after/alias.zsh zsh.after/appearance.zsh $$HOME/.zsh.after/
