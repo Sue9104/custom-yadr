@@ -32,14 +32,14 @@ yadr:
 	else \
 		sudo brew install git rake zsh;\
 	fi;
-	git submodule update --init --recursive
 	chmod +x yadr/install.sh && ./yadr/install.sh
+	cd $$HOME/.yadr && git submodule update --init --recursive
 	[ -d $$HOME/.zsh.after ] || mkdir $$HOME/.zsh.after
 	\cp zsh.after/alias.zsh zsh.after/appearance.zsh $$HOME/.zsh.after/
 
 vim: yadr
 	\cp vim/.vim* vim/.editorconfig	$$HOME/
-	[ -d $$HOME/.vim/ ] || mkdir $$HOME/.vim/ /home/minsu/.vim/vundles/
+	[ -d $$HOME/.vim/ ] || mkdir $$HOME/.vim/ $$HOME/.vim/vundles/
 	\cp vim/vundles.vim $$HOME/.vim/
 	\sed -i '/neocomplete/d; /snipmate/d' $$HOME/.vim/vundles/*vundle
 	\cp vim/vim-enhancements.vundle $$HOME/.vim/vundles/
