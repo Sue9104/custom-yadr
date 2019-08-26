@@ -3,7 +3,7 @@ PLATFORM := $(shell uname)
 all: install update
 install: yadr python docker
 
-.PHONY: install yadr vim python rust r perl docker
+.PHONY: install yadr vim python rust r perl docker nvm
 
 define youcompleteme
 	if [ ! -d $$HOME/.vim/bundle/YouCompleteMe/ ]; then \
@@ -76,6 +76,11 @@ perl:
 
 r:
 	\cp config/Rprofile $$HOME/.Rprofile
+
+nvm:
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+	\cp zsh.after/nvm.zsh $$HOME/.zsh.after/
+
 
 docker:
 	if [ "$(PLATFORM)" == "Linux" ]; then \
