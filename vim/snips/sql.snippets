@@ -3,23 +3,50 @@
 #######################################################################
 
 snippet create_table "create table"
-create table $1 (
+create table if not exists $1 (
 	$2  TEXT  NOT NULL,
 	$3  TEXT  NOT NULL
 );
 endsnippet
 
 snippet create_schema "create schema"
-create schema $1;
+create schema if not exists $1;
 endsnippet
 
 snippet create_function "create function"
-	create function $1(arg1 TEXT, arg2 TEXT) RETURNS BOOLEAN AS $$
+	create or replace function $1(arg1 TEXT, arg2 TEXT) RETURNS BOOLEAN AS $$
 	DECLARE arg BOOLEAN;
 	BEGIN
 		...
 	RETURN arg;
 	END $$  LANGUAGE plpgsql;
+endsnippet
+
+snippet create_procedure "create procedure"
+	create or replace procedure $1(arg1 TEXT, arg2 TEXT) AS $$
+	DECLARE arg BOOLEAN;
+	BEGIN
+		...
+	END $$  LANGUAGE plpgsql;
+endsnippet
+
+snippet create_view "create view"
+	create or replace view $1 () as
+	select ;
+endsnippet
+
+snippet create_materialized_view "create materialized view"
+	create materialized view $1 () as
+	select
+	with no data;
+endsnippet
+
+snippet revert_view "revert view"
+drop view $1;
+endsnippet
+
+snippet revert_materialized_view "revert materialized view"
+drop materialized view $1;
 endsnippet
 
 snippet revert_table "revert table"
@@ -30,21 +57,21 @@ snippet revert_schema "revert schema"
 drop schema $1;
 endsnippet
 
-snippet revert_table "revert function"
+snippet revert_function "revert function"
 drop function $1;
 endsnippet
 
 snippet verify_schema "verify schema"
-select has_schema_privilege($1,'usage');
+select has_schema_privilege('$1','usage');
 endsnippet
 
 snippet verify_table "verify table"
-select has_table_privilege($1,'usage');
-select id from table where false;
+select has_table_privilege('$1','select');
+select id from $1 where false;
 endsnippet
 
 snippet verify_function "verify function"
-select has_function_privilege($1,'execute');
+select has_function_privilege('$1','execute');
 endsnippet
 
 snippet test_schema "test schema"
