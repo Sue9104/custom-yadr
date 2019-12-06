@@ -22,3 +22,19 @@ make install
 ```
 make update
 ```
+
+## Ubuntu essential
+
+### sougou pinyin
+
+1. download deb: https://pinyin.sogou.com/linux/?r=pinyin
+2. install: sudo dpkg -i \*.deb
+3. change settings > region & language > manage installed languages > keyboard input method system > fcitx
+
+### terminal profiles
+
+Change terminal profiles to Front Galaxy 50
+
+```
+bash -c  "$(wget -qO- https://git.io/vQgMr)"
+```

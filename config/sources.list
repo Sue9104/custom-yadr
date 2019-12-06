@@ -1,0 +1,6 @@
+deb http://ftp.sjtu.edu.cn/ubuntu/ dapper main multiverse restricted universe
+deb http://ftp.sjtu.edu.cn/ubuntu/ dapper-backports main multiverse restricted universe
+deb http://ftp.sjtu.edu.cn/ubuntu/ dapper-proposed main multiverse restricted universe
+deb http://ftp.sjtu.edu.cn/ubuntu/ dapper-security main multiverse restricted universe
+deb http://ftp.sjtu.edu.cn/ubuntu/ dapper-updates main multiverse restricted universe
+deb http://ftp.sjtu.edu.cn/ubuntu-cn/ dapper main multiverse restricted universe

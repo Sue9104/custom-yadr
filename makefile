@@ -28,11 +28,11 @@ endef
 
 yadr:
 	if [ "$(PLATFORM)" == "Linux" ]; then \
-		sudo apt install git rake zsh cmake python3-dev ;\
+		sudo apt install -y git rake zsh cmake python3-dev ;\
 	else \
 		sudo brew install git rake zsh cmake python3-dev ;\
 	fi;
-	chmod +x yadr/install.sh && sh yadr/install.sh
+	chmod +x config/install_yadr.sh && sh config/install_yadr.sh
 	cd $$HOME/.yadr && git submodule update --init --recursive
 	[ -d $$HOME/.zsh.after ] || mkdir $$HOME/.zsh.after
 	\cp zsh.after/alias.zsh zsh.after/appearance.zsh $$HOME/.zsh.after/
@@ -65,7 +65,7 @@ rust:
 
 perl:
 	if [ "$(PLATFORM)" == "Linux" ]; then \
-		sudo apt-get install perl;\
+		sudo apt-get install -y perl;\
 	else \
 		sudo brew install perl;\
 	fi;
@@ -85,11 +85,11 @@ nvm:
 docker:
 	if [ "$(PLATFORM)" == "Linux" ]; then \
 		echo "please read https://docs.docker.com/install/linux/docker-ce/ubuntu/ for details" ;\
-  	sudo apt-get install apt-transport-https ca-certificates curl software-properties-common ;\
+  	sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common ;\
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - ;\
     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $$(lsb_release -cs) stable" ;\
     sudo apt-get update ;\
-    sudo apt-get install docker-ce docker-ce-cli containerd.io ;\
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io ;\
     sudo groupadd docker && sudo usermod -aG docker $$(who am i| awk '{print \$1}');\
 		echo "please read https://docs.docker.com/compose/install/ for details";\
     sudo curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$$(uname -s)-$$(uname -m) -o /usr/local/bin/docker-compose ;\
@@ -100,3 +100,18 @@ docker:
 
 update:
 	cd $$HOME/.yadr && rake update
+
+ubuntu:
+	sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak && sudo cp config/sources.list /etc/apt/sources.list
+	sudo apt update && sudo apt install -y build-essential git dconf-tools fcitx-bin fcitx-table libcanberra-gtk-module libcanberra-gtk3-module dconf-cli uuid-runtime
+	# chrome
+	wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo dpkg -i google-chrome-stable_current_amd64.deb
+	# ssr
+	wget -c https://github.com/qingshuisiyuan/electron-ssr-backup/releases/download/v0.2.6/electron-ssr-0.2.6.deb && sudo dpkg -i electron-ssr-0.2.6.deb
+	# move dash to bottom center
+	gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
+	gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM
+	gsettings set org.gnome.shell.extensions.dash-to-dock transparency-mode FIXED
+	gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 42
+	gsettings set org.gnome.shell.extensions.dash-to-dock unity-backlit-items true
+	gsettings set org.gnome.shell.extensions.dash-to-dock autohide-in-fullscreen true
