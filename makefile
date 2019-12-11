@@ -78,8 +78,10 @@ r:
 	\cp config/Rprofile $$HOME/.Rprofile
 
 nvm:
-	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
 	\cp zsh.after/nvm.zsh $$HOME/.zsh.after/
+	[ -s "$$HOME/.nvm/nvm.sh" ] && \. "$$HOME/.nvm/nvm.sh"
+	nvm install node
 
 
 docker:
@@ -90,7 +92,7 @@ docker:
     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $$(lsb_release -cs) stable" ;\
     sudo apt-get update ;\
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io ;\
-    sudo groupadd docker && sudo usermod -aG docker $$(who am i| awk '{print \$1}');\
+    sudo groupadd docker && sudo usermod -aG docker $$(whoami| awk '{print \$1}');\
 		echo "please read https://docs.docker.com/compose/install/ for details";\
     sudo curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$$(uname -s)-$$(uname -m) -o /usr/local/bin/docker-compose ;\
     sudo chmod +x /usr/local/bin/docker-compose ;\
@@ -103,7 +105,11 @@ update:
 
 ubuntu:
 	sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak && sudo cp config/sources.list /etc/apt/sources.list
-	sudo apt update && sudo apt install -y build-essential git dconf-tools fcitx-bin fcitx-table libcanberra-gtk-module libcanberra-gtk3-module dconf-cli uuid-runtime
+	sudo apt update && sudo apt install -y build-essential git vim dconf-tools fcitx-bin fcitx-table libcanberra-gtk-module libcanberra-gtk3-module dconf-cli uuid-runtime filezilla
+	# git init
+	git config --global user.name Sue9104
+	git config --global user.email sumin2012@163.com
+	git config --global core.editor vim
 	# chrome
 	wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo dpkg -i google-chrome-stable_current_amd64.deb
 	# ssr
