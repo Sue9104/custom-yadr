@@ -104,16 +104,19 @@ update:
 	cd $$HOME/.yadr && rake update
 
 ubuntu:
-	sudo mv /etc/apt/sources.list /etc/apt/sources.list.bak && sudo cp config/sources.list /etc/apt/sources.list
-	sudo apt update && sudo apt install -y build-essential git vim dconf-tools fcitx-bin fcitx-table libcanberra-gtk-module libcanberra-gtk3-module dconf-cli uuid-runtime filezilla
+	sudo apt update && sudo apt install -y build-essential git vim dconf-tools fcitx-bin fcitx-table dconf-cli uuid-runtime filezilla
+	sudo apt install -f -y
 	# git init
 	git config --global user.name Sue9104
 	git config --global user.email sumin2012@163.com
 	git config --global core.editor vim
 	# chrome
-	wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo dpkg -i google-chrome-stable_current_amd64.deb
+	wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P $$HOME/Downloads/
+	sudo dpkg -i $$HOME/Downloads/google-chrome-stable_current_amd64.deb
 	# ssr
-	wget -c https://github.com/qingshuisiyuan/electron-ssr-backup/releases/download/v0.2.6/electron-ssr-0.2.6.deb && sudo dpkg -i electron-ssr-0.2.6.deb
+	sudo apt install -y libcanberra-gtk-module libcanberra-gtk3-module gconf2 gconf-service libappindicator1 libssl-dev python
+	wget -c https://github.com/qingshuisiyuan/electron-ssr-backup/releases/download/v0.2.6/electron-ssr-0.2.6.deb -P $$HOME/Downloads/
+	sudo dpkg -i $$HOME/Downloads/electron-ssr-0.2.6.deb
 	# move dash to bottom center
 	gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
 	gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM

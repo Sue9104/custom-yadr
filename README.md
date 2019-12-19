@@ -25,6 +25,16 @@ make update
 
 ## Ubuntu essential
 
+### Chrome
+
+1. install electron-ssr
+2. install switchyomegea
+  - drag crx to chrome://extensions
+  - open developer mode
+  - optional: set chrome://flags/#extensions-on-chrome-urls to enable
+3. switchyomega settings
+  - set rule list to proxy: https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
+
 ### sougou pinyin
 
 1. download deb: https://pinyin.sogou.com/linux/?r=pinyin
