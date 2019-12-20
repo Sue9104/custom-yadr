@@ -7,20 +7,20 @@ install: yadr python docker
 
 define youcompleteme
 	if [ ! -d $$HOME/.vim/bundle/YouCompleteMe/ ]; then \
-		git clone git@github.com:Valloric/YouCompleteMe.git $$HOME/.vim/bundle/YouCompleteMe/;\
+		git config https.proxy http://127.0.0.1:12333;\
+		git clone https://github.com/ycm-core/YouCompleteMe.git $$HOME/.vim/bundle/YouCompleteMe/;\
 	fi;
-	#git config http.proxy http://127.0.0.1:12333
   cd $$HOME/.vim/bundle/YouCompleteMe/ && git submodule update --init --recursive && python3 install.py
 endef
 
 define miniconda
   if [ ! -x "$$(command -v conda)" ]; then \
-		wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh ;\
-		wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh ;\
 		if [ "$(PLATFORM)" == "Linux" ]; then \
-			bash Miniconda3-latest-Linux-x86_64.sh -b -f -p $$HOME/miniconda ; \
+			wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -P $$HOME/Downloads;\
+			bash $$HOME/Downloads/Miniconda3-latest-Linux-x86_64.sh -b -f -p $$HOME/miniconda ; \
 		else \
-			bash Miniconda3-latest-MacOSX-x86_64.sh -b -f -p $$HOME/miniconda ; \
+			wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -P $$HOME/Downloads;\
+			bash $$HOME/Downloads/Miniconda3-latest-MacOSX-x86_64.sh -b -f -p $$HOME/miniconda ; \
 		fi;\
 	fi;
 endef
@@ -81,7 +81,7 @@ nvm:
 	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
 	\cp zsh.after/nvm.zsh $$HOME/.zsh.after/
 	[ -s "$$HOME/.nvm/nvm.sh" ] && \. "$$HOME/.nvm/nvm.sh"
-	nvm install node
+	nvm install node cytoscape
 
 
 docker:
@@ -92,7 +92,7 @@ docker:
     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $$(lsb_release -cs) stable" ;\
     sudo apt-get update ;\
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io ;\
-    sudo groupadd docker && sudo usermod -aG docker $$(whoami| awk '{print \$1}');\
+    sudo groupadd docker && sudo usermod -aG docker $$(whoami| awk '{print $$1}');\
 		echo "please read https://docs.docker.com/compose/install/ for details";\
     sudo curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$$(uname -s)-$$(uname -m) -o /usr/local/bin/docker-compose ;\
     sudo chmod +x /usr/local/bin/docker-compose ;\
@@ -104,7 +104,7 @@ update:
 	cd $$HOME/.yadr && rake update
 
 ubuntu:
-	sudo apt update && sudo apt install -y build-essential git vim dconf-tools fcitx-bin fcitx-table dconf-cli uuid-runtime filezilla
+	sudo apt update && sudo apt install -y build-essential git vim dconf-tools fcitx-bin fcitx-table dconf-cli uuid-runtime filezilla curl htop python python2.7-dev
 	sudo apt install -f -y
 	# git init
 	git config --global user.name Sue9104
@@ -113,6 +113,11 @@ ubuntu:
 	# chrome
 	wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P $$HOME/Downloads/
 	sudo dpkg -i $$HOME/Downloads/google-chrome-stable_current_amd64.deb
+	# ssh
+	sudo apt install -y openssh-server
+	sudo sed -i 's/#Port/Port/g' /etc/ssh/sshd_config
+	sudo ufw allow 22
+	sudo service ssh restart
 	# ssr
 	sudo apt install -y libcanberra-gtk-module libcanberra-gtk3-module gconf2 gconf-service libappindicator1 libssl-dev python
 	wget -c https://github.com/qingshuisiyuan/electron-ssr-backup/releases/download/v0.2.6/electron-ssr-0.2.6.deb -P $$HOME/Downloads/
