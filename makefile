@@ -97,6 +97,7 @@ docker:
 		echo "please read https://docs.docker.com/compose/install/ for details";\
     sudo curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$$(uname -s)-$$(uname -m) -o /usr/local/bin/docker-compose ;\
     sudo chmod +x /usr/local/bin/docker-compose ;\
+		sudo echo "DOCKER_OPTS=\"--registry-mirror=https://registry.docker-cn.com\"" >> /etc/default/docker
 	else \
 		echo "please read https://docs.docker.com/docker-for-mac/install/ for details"; \
 	fi;
@@ -108,6 +109,7 @@ ubuntu:
 	sudo apt update && sudo apt install -y build-essential git vim dconf-tools fcitx-bin fcitx-table dconf-cli uuid-runtime filezilla curl htop python python2.7-dev
 	# Chinese font
 	sudo apt install -y fonts-droid-fallback fonts-wqy-zenhei fonts-wqy-microhei fonts-arphic-ukai fonts-arphic-uming
+	sudo \cp -r win7fonts /usr/share/fonts/
 	sudo fc-cache -f -v
 	sudo apt install -f -y
 	# git init
