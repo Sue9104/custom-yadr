@@ -50,6 +50,7 @@ vim: yadr
 
 python:
 	$(call miniconda)
+	\cp config/.condarc $$HOME/.condarc
 	[ -d $$HOME/miniconda/envs/test3/ ] || $$HOME/miniconda/bin/conda create -y -n test3 python=3
 	source $$HOME/miniconda/bin/activate test3 && \
 		pip install -r config/python.packages
@@ -105,6 +106,9 @@ update:
 
 ubuntu:
 	sudo apt update && sudo apt install -y build-essential git vim dconf-tools fcitx-bin fcitx-table dconf-cli uuid-runtime filezilla curl htop python python2.7-dev
+	# Chinese font
+	sudo apt install -y fonts-droid-fallback fonts-wqy-zenhei fonts-wqy-microhei fonts-arphic-ukai fonts-arphic-uming
+	sudo fc-cache -f -v
 	sudo apt install -f -y
 	# git init
 	git config --global user.name Sue9104
