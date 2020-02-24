@@ -3,18 +3,18 @@
 #######################################################################
 
 snippet create_table "create table"
-create table if not exists $1 (
+CREATE TABLE IF NOT EXISTS $1 (
 	$2  TEXT  NOT NULL,
 	$3  TEXT  NOT NULL
 );
 endsnippet
 
 snippet create_schema "create schema"
-create schema if not exists $1;
+CREATE SCHEMA IF NOT EXISTS $1;
 endsnippet
 
 snippet create_function "create function"
-	create or replace function $1(arg1 TEXT, arg2 TEXT) RETURNS BOOLEAN AS $$
+CREATE OR REPLACE FUNCTION $1(arg1 TEXT, arg2 TEXT) RETURNS BOOLEAN AS $$
 	DECLARE arg BOOLEAN;
 	BEGIN
 		...
@@ -23,7 +23,7 @@ snippet create_function "create function"
 endsnippet
 
 snippet create_procedure "create procedure"
-	create or replace procedure $1(arg1 TEXT, arg2 TEXT) AS $$
+CREATE OR REPLACE PROCEDURE $1(arg1 TEXT, arg2 TEXT) AS $$
 	DECLARE arg BOOLEAN;
 	BEGIN
 		...
@@ -31,87 +31,87 @@ snippet create_procedure "create procedure"
 endsnippet
 
 snippet create_view "create view"
-	create or replace view $1 () as
-	select ;
+	CREATE OR REPLACE VIEW $1 () AS
+	SELECT ;
 endsnippet
 
 snippet create_materialized_view "create materialized view"
-	create materialized view $1 () as
-	select
-	with no data;
+	CREATE MATERIALIZED VIEW $1 () AS
+	SELECT
+	WITH NO DATA;
 endsnippet
 
 snippet revert_view "revert view"
-drop view $1;
+DROP VIEW $1;
 endsnippet
 
 snippet revert_materialized_view "revert materialized view"
-drop materialized view $1;
+DROP MATERIALIZED VIEW $1;
 endsnippet
 
 snippet revert_table "revert table"
-drop table $1;
+DROP TABLE $1;
 endsnippet
 
 snippet revert_schema "revert schema"
-drop schema $1;
+DROP SCHEMA $1;
 endsnippet
 
 snippet revert_function "revert function"
-drop function $1;
+DROP FUNCTION $1;
 endsnippet
 
 snippet verify_schema "verify schema"
-select has_schema_privilege('$1','usage');
+SELECT has_schema_privilege('$1','USUAGE');
 endsnippet
 
 snippet verify_table "verify table"
-select has_table_privilege('$1','select');
-select id from $1 where false;
+SELECT has_table_privilege('$1','SELECT');
+SELECT id FROM $1 WHERE FALSE;
 endsnippet
 
 snippet verify_function "verify function"
-select has_function_privilege('$1','execute');
+SELECT has_function_privilege('$1','EXECUTE');
 endsnippet
 
 snippet test_schema "test schema"
-select has_schema('$1');
+SELECT has_schema('$1');
 endsnippet
 
 snippet test_table "test table"
-set search_path to $1,public;
-select has_table('$2');
-select has_has_column('$2', '$3');
-select col_type_is('$2', '$3', 'text');
-select col_not_null('$2', '$3');
-select col_hasnt_defalut('$2', '$3');
-select col_default_is('$2', '$3', 'value');
+SET search_path TO $1,public;
+SELECT has_table('$2');
+SELECT has_has_column('$2', '$3');
+SELECT col_type_is('$2', '$3', 'text');
+SELECT col_not_null('$2', '$3');
+SELECT col_hasnt_defalut('$2', '$3');
+SELECT col_default_is('$2', '$3', 'value');
 endsnippet
 
 snippet test_function "test function"
-select has_function( '$1' );
-select has_function( '$1', $2 );
-select has_function_lang_is( '$1', $2, 'sql' );
-select has_function_returns( '$1', $3, 'void' );
-select lives_ok(
-	$$ select funct() $$,
+SELECT has_function( '$1' );
+SELECT has_function( '$1', $2 );
+SELECT has_function_lang_is( '$1', $2, 'sql' );
+SELECT has_function_returns( '$1', $3, 'void' );
+SELECT lives_ok(
+	$$ SELECT funct() $$,
 	'function ok'
 );
-select throws_ok(
+SELECT throws_ok(
 	$$ select funct() $$,
 	23505, -- duplicate key violation
 	null, -- localize err message
 	'should get an err for duplicate name'
 );
-select row_eq(
+SELECT row_eq(
 	'select * from table users',
 	ROW(a,b)::users,
 	'the users show has been insert'
 );
-select has_function( '$1' );
-select has_function( '$1' );
-select has_function( '$1' );
-select has_function( '$1' );
-select has_function( '$1' );
+SELECT has_function( '$1' );
+SELECT has_function( '$1' );
+SELECT has_function( '$1' );
+SELECT has_function( '$1' );
+SELECT has_function( '$1' );
 endsnippet
 # vim:ft=snippets:
