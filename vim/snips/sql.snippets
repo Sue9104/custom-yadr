@@ -67,11 +67,12 @@ endsnippet
 
 snippet verify_table "verify table"
 SELECT has_table_privilege('$1','SELECT');
-SELECT id FROM $1 WHERE FALSE;
+SELECT has_column_privilege('$1', '$2', 'SELECT');
+SELECT has_type_privilege('$3', 'SELECT');
 endsnippet
 
 snippet verify_function "verify function"
-SELECT has_function_privilege('$1','EXECUTE');
+SELECT has_function_privilege('func_name(TEXT, TEXT)','EXECUTE');
 endsnippet
 
 snippet test_schema "test schema"
@@ -79,39 +80,35 @@ SELECT has_schema('$1');
 endsnippet
 
 snippet test_table "test table"
-SET search_path TO $1,public;
 SELECT has_table('$2');
-SELECT has_has_column('$2', '$3');
+SELECT has_pk('$2');
+
+SELECT col_is_unique('$2', '$3');
 SELECT col_type_is('$2', '$3', 'text');
 SELECT col_not_null('$2', '$3');
-SELECT col_hasnt_defalut('$2', '$3');
 SELECT col_default_is('$2', '$3', 'value');
+
 endsnippet
 
 snippet test_function "test function"
-SELECT has_function( '$1' );
+-- SELECT has_function( 'insert_user', ARRAY['text', 'text']);
 SELECT has_function( '$1', $2 );
-SELECT has_function_lang_is( '$1', $2, 'sql' );
+-- SELECT has_function_returns( 'insert_user', ARRAY['text', 'text'], 'void' );
 SELECT has_function_returns( '$1', $3, 'void' );
 SELECT lives_ok(
-	$$ SELECT funct() $$,
-	'function ok'
+	$$ SELECT $1('','') $$,
+	'function ok' -- descript
 );
 SELECT throws_ok(
 	$$ select funct() $$,
-	23505, -- duplicate key violation
-	null, -- localize err message
-	'should get an err for duplicate name'
+	23505, -- postgresql error code
+	null, -- error message
+	'should get an err for duplicate name' -- description
 );
 SELECT row_eq(
-	'select * from table users',
-	ROW(a,b)::users,
+	$$ select * from table users $$,
+	ROW(a,b),
 	'the users show has been insert'
 );
-SELECT has_function( '$1' );
-SELECT has_function( '$1' );
-SELECT has_function( '$1' );
-SELECT has_function( '$1' );
-SELECT has_function( '$1' );
 endsnippet
 # vim:ft=snippets:
