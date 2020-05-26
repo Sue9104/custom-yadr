@@ -959,4 +959,13 @@ snippet time "get current time"
 	import time
 	now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 endsnippet
+
+snippet log "logging"
+import logging
+log_file = "{}/script.log"
+logging.basicConfig(
+  level=logging.INFO, filename=log_file, filemode='w',
+  format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s'
+)
+endsnippet
 # vim:ft=snippets:
