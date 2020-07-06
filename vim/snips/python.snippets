@@ -962,10 +962,55 @@ endsnippet
 
 snippet log "logging"
 import logging
-log_file = "{}/script.log"
-logging.basicConfig(
-  level=logging.INFO, filename=log_file, filemode='w',
-  format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s'
+file_handler = logging.FileHandler(
+    filename = os.path.join(args.outdir, "primer_design.log")
 )
+standout_handler = logging.StreamHandler(sys.stdout)
+logging.basicConfig(
+    level=logging.INFO,
+    handlers = [file_handler, standout_handler],
+    format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s'
+)
+endsnippet
+
+snippet xlsx "write xlsx with special format"
+import xlsxwriter
+workbook = xlsxwriter.Workbook(outfile)
+worksheet = workbook.add_worksheet()
+#write title
+title_format = workbook.add_format(
+    {'align': 'center', 'valign': 'vcenter', 'border': 0
+     'font_size': 20,'font_name': 'SimSun'}
+)
+worksheet.merge_range('A1:L1', "TableName")
+worksheet.set_row(0, 30, title_format)
+#write header
+end_line = info.shape[0] + 2
+worksheet.add_table(
+    'A2:L{}'.format(end_line),
+    {'style': None, 'columns': [{'header': '胎儿性别'}, {'header': '临床审核'},]}
+)
+cell_format = workbook.add_format({'align': 'center', 'valign': 'vcenter',
+                                   'font_size': 12, 'font_name': 'SimSun',
+                                   'border': 1})
+worksheet.set_row(1, 20, cell_format)
+#write content
+start = 0
+for sample_id in info.index:
+    row_content = [gender.at[sample_id, 'Sex'], '']
+    worksheet.write_row('A{}'.format(start+3), row_content)
+    worksheet.set_row(start+2, 20, cell_format)
+    start += 1
+#merge cells
+worksheet.merge_range('H3:H{}'.format(end_line), '')
+worksheet.merge_range('I3:I{}'.format(end_line), '')
+worksheet.merge_range('J3:J{}'.format(end_line), '')
+#set column width
+worksheet.set_column('A:E', 8)
+worksheet.set_column('F:F', 12)
+worksheet.set_column('G:G', 20)
+worksheet.set_column('H:L', 8)
+
+workbook.close()
 endsnippet
 # vim:ft=snippets:
