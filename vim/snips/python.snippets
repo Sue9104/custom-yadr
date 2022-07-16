@@ -1035,6 +1035,69 @@ intersphinx_mapping = {
 
 endsnippet
 
+snippet url "django url patterns"
+from django.urls import path
+from . import views
 
+app_name = '$1'
+urlpatterns = [
+    path('', views.index, name='index'),
+    path('<int:pk>/', views.detail, name='detail'),
+]
+endsnippet
+
+snippet setting "django project setting"
+# Add to INSTALLED_APPS
+    '$1.apps.DesignConfig'
+
+# Edit DATABASES
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'primerweb',
+        'USER': 'primeradmin',
+        'PASSWORD': 'primeradmin',
+        'HOST': 'localhost',
+        'PORT': 5432,
+    }
+}
+
+# Timezone
+TIME_ZONE = 'Asia/Shanghai'
+
+# Add STATIC_ROOT
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+endsnippet
+
+snippet model "django database model"
+from django.db import models
+
+# Create your models here.
+class $1(models.Model):
+    position = models.CharField(max_length = 200, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now = True, blank=True)
+    created_at = models.DateTimeField(auto_now_add = True, blank=True)
+    class Meta:
+        unique_together = (
+            ('', '')
+        )
+endsnippet
+
+snippet views "django views"
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+from .models import Primer
+
+# Create your views here.
+def index(request):
+    return render(request, 'design/detail.html', {'position': position})
+
+def results(request, position):
+    try:
+        primer = Primer.objects.filter(position = position)
+    except Primer.DoesNotExist:
+        raise Http404("Primer does not exists")
+endsnippet
 # vim:ft=snippets:
 
