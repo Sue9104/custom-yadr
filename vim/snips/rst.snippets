@@ -1,0 +1,211 @@
+snippet tip "rst example"
+.. This is a comment.
+.. italic *, bold **, ``code``
+   list: unorder *, ordered #., subitem idented *
+   no breakline: |
+
+   This is `weblink`_.
+   .. _weblink: https://domain.invalid/
+
+   .. _my-reference-label:
+   It refers to the section itself, see :ref:`my-reference-label`.
+
+   :doc:`install`
+   file appears in index/install
+
+   .. |name| replace:: replacement_text
+   |name| in the content
+endsnippet
+
+snippet title "title"
+##################################################
+Title
+##################################################
+
+endsnippet
+
+snippet h1 "first header"
+**************************************************
+h1
+**************************************************
+
+endsnippet
+
+snippet h2 "second header"
+==================================================
+h2
+==================================================
+endsnippet
+
+snippet h3 "third header"
+--------------------------------------------------
+h3
+--------------------------------------------------
+
+endsnippet
+
+
+snippet h4 "fouth header"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+h4
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+endsnippet
+
+snippet paragraph "paragraph"
+''''''''''''''''''''''''''''''''''''''''''''''''''
+Paragraph
+''''''''''''''''''''''''''''''''''''''''''''''''''
+endsnippet
+
+snippet flist "field list"
+:Organization: humankind
+:Version: 1
+:Field name 2:
+endsnippet
+
+snippet glossary "glossary"
+.. glossary::
+
+   Documentation
+      Provides users with the knowledge they need to use something.
+
+endsnippet
+
+snippet image "image"
+.. image:: /images/picture.jpg
+   :height: 100px
+   :width: 200 px
+   :scale: 50 %
+   :align: right
+   :alt: alternate text
+   :target: none
+endsnippet
+
+snippet figure
+.. figure:: /images/picture.png
+   :scale: 50 %
+   :alt: map to buried treasure
+
+   This is the caption of the figure (a simple paragraph).
+
+   The legend consists of all elements after the caption.  In this
+   case, the legend consists of this paragraph and the following
+   table:
+
+   +-----------------------+-----------------------+
+   | Symbol                | Meaning               |
+   +=======================+=======================+
+   | .. image:: tent.png   | Campground            |
+   +-----------------------+-----------------------+
+   | .. image:: waves.png  | Lake                  |
+   +-----------------------+-----------------------+
+   | .. image:: peak.png   | Mountain              |
+   +-----------------------+-----------------------+
+
+endsnippet
+
+snippet code "code"
+
+.. code-block:: python
+   :linenos:
+   :dedent:
+   :lineno-start: 0
+   :emphasize-lines: 2
+   :caption: this.py
+   :name: this-py
+      def my_function():
+         print(8/2)
+
+endsnippet
+
+snippet epigraph
+.. epigraph::
+
+   No matter where you go, there you are.
+
+   -- Buckaroo Banzai
+endsnippet
+
+snippet csvtable "table data from csv"
+.. csv-table:: Frozen Delights!
+   :widths: 15, 10, 30
+   :align: center
+   :header-rows: 0
+   :header: "Treat", "Quantity", "Description"
+   :stub-columns: 0
+
+   "Albatross", 2.99, "On a stick!"
+endsnippet
+
+snippet table "table list input"
+.. list-table:: Frozen Delights!
+   :widths: 15 10 30
+   :header-rows: 1
+   :stub-columns: 0
+
+   * - Treat
+     - Quantity
+     - Description
+   * - Albatross
+     - 2.99
+     - On a stick!
+endsnippet
+
+snippet admon "admonition with header line"
+.. admonition:: The one with the custom titles
+
+   It's got a certain charm to it.
+endsnippet
+snippet attention
+.. attention::
+
+   Climate change is real.
+endsnippet
+snippet caution
+.. caution::
+
+   Cliff ahead: Don't drive off it.
+endsnippet
+snippet danger
+.. danger::
+
+   Mad scientist at work!
+endsnippet
+snippet error
+.. error::
+
+   Does not compute.
+endsnippet
+snippet hint
+.. hint::
+
+   Insulators insulate, until they are subject to ______ voltage.
+endsnippet
+snippet important
+.. important::
+
+   Tech is not neutral, nor is it apolitical.
+endsnippet
+snippet note
+.. note::
+
+   This is a note.
+endsnippet
+
+snippet seealso
+.. seealso::
+
+   Other relevant information.
+endsnippet
+snippet tip
+.. tip::
+
+   25% if the service is good.
+endsnippet
+
+snippet warning
+.. warning::
+
+   Reader discretion is strongly advised.
+endsnippet
+

@@ -48,6 +48,9 @@ vim: yadr
 	\cp vim/snips/* $$HOME/.vim/bundle/vim-snippets/UltiSnips/
 	\cp vim/global_extra_conf.py $$HOME/
 
+snips:
+	\cp vim/snips/* $$HOME/.vim/bundle/vim-snippets/UltiSnips/
+
 python:
 	$(call miniconda)
 	\cp config/.condarc $$HOME/.condarc

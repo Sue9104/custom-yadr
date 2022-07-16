@@ -715,50 +715,54 @@ endsnippet
 snippet setup "setup.py"
 from setuptools import setup, find_packages
 setup(
-	name='MyApp',
-	version='1.0',
-	author = "Min Su",
-	author_email = "minsu@singleragenomics.com",
-	description = "This is a sample package",
-	keywords = "hello world example",
-	url = "http://example.com/HelloWorld/",
-	packages = find_packages(),
+	name="mypkg",
+	version="1.0",
+	author="SuMin",
+	author_email="sumin2012@163.com",
+	description=" ...",
 	long_description = __doc__,
-	include_package_data = True,
-	exclude_package_date = {'':['.gitignore']},
-	install_requires=[
-			'Flask-SQLAlchemy>=1.5,<=2.1'
-	],
+	url="http://github.com/",
+	python_requires=">=3.10",
+	license = "MIT",
 	classifer = [
-		# How mature is this project? Common values are
-		#   3 - Alpha
-		#   4 - Beta
-		#   5 - Production/Stable
+		# Current status: 3-Alpha, 4-Beta, 5-Production/Stable
 		'Development Status :: 3 - Alpha',
-
 		# Indicate who your project is intended for
 		'Intended Audience :: Developers',
 		'Topic :: Software Development :: Build Tools',
-
-		# Pick your license as you wish (should match "license" above)
-		'License :: OSI Approved :: MIT License',
-
-		# Specify the Python versions you support here. In particular, ensure
-		# that you indicate whether you support Python 2, Python 3 or both.
-		'Programming Language :: Python :: 2',
-		'Programming Language :: Python :: 2.6',
-		'Programming Language :: Python :: 2.7',
-		'Programming Language :: Python :: 3',
-		'Programming Language :: Python :: 3.3',
-		'Programming Language :: Python :: 3.4',
-		'Programming Language :: Python :: 3.5',
 	],
+
+	#packages=find_packages(where = "src/scrna", include = ["*"], exclude = ["*pyc"],),
+	# package structure: target path, source path
+	package_dir = {".": "src"},
+
+	# package data specified in MANIFEST.in
+	include_package_data=True,
+	exclude_package_data={'':['.gitignore']},
+
+
+	# package executable commands
+	#   'cli-name = mypkg.mymodule:some_func',
+	entry_points={
+		'console_scripts': [
+		]
+	},
+
+
+	# required packages
+	## platfrom specific dependencies:
+	##   "pywin32 >= 1.0;platform_system=='Windows'"
+	install_requires=['pandas'],
+
+	# extra requirements: identifier: [required_packages]
+	##    "PDF": ["ReportLab>=1.2", "RXP"],
+	extras_require={},
 )
 endsnippet
 
 snippet main "execute check in the end"
 if __name__ == '__main__':
-	main()
+main()
 endsnippet
 
 snippet docs "doc for script"
@@ -783,44 +787,40 @@ Todo:
 endsnippet
 
 snippet docs_f "docs for function"
-	"""Example function with types documented in the docstring.
+"""24l: Example function with types documented in the docstring.
 
-	function description
+function description
 
-	Args:
-			param1 (int): The first parameter.
-			param2 (str): The second parameter.
+Args:
+		param1 (int): The first parameter.
+		param2 (str): The second parameter.
 
-	Returns:
-			bool: The return value. True for success, False otherwise.
+Returns:
+		bool: The return value. True for success, False otherwise.
 
-	Yields:
-			int: The next number in the range of 0 to `n` - 1
-			works for generator
+Yields:
+		int: The next number in the range of 0 to `n` - 1
+		works for generator
 
-	Raises:
-		AttributeError: The ``Raises`` section is a list of all exceptions
-		ValueError: If `param2` is equal to `param1`.
+Raises:
+	AttributeError: The ``Raises`` section is a list of all exceptions
+	ValueError: If `param2` is equal to `param1`.
 
-	Examples:
-			>>> print([i for i in example_generator(4)])
-			[0,1,2,3]
+Examples:
+		>>> print([i for i in example_generator(4)])
+		[0,1,2,3]
 
-	"""
+"""
 endsnippet
 
 snippet docs_c "docs for class"
-	"""Summary line for a class
+	"""8l: Summary line for a class
 
 	class description
 
 	Attributes:
 		attr1 (str): Description
 		attr2 (int, optional): Description
-
-	Todo:
-		* a1
-		* a2
 
 	"""
 endsnippet
@@ -963,13 +963,13 @@ endsnippet
 snippet log "logging"
 import logging
 file_handler = logging.FileHandler(
-    filename = os.path.join(args.outdir, "primer_design.log")
+  filename = os.path.join(args.outdir, "primer_design.log")
 )
 standout_handler = logging.StreamHandler(sys.stdout)
 logging.basicConfig(
-    level=logging.INFO,
-    handlers = [file_handler, standout_handler],
-    format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s'
+	level=logging.INFO,
+  handlers = [file_handler, standout_handler],
+  format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s'
 )
 endsnippet
 
@@ -979,16 +979,16 @@ workbook = xlsxwriter.Workbook(outfile)
 worksheet = workbook.add_worksheet()
 #write title
 title_format = workbook.add_format(
-    {'align': 'center', 'valign': 'vcenter', 'border': 0
-     'font_size': 20,'font_name': 'SimSun'}
+  {'align': 'center', 'valign': 'vcenter', 'border': 0
+  'font_size': 20,'font_name': 'SimSun'}
 )
 worksheet.merge_range('A1:L1', "TableName")
 worksheet.set_row(0, 30, title_format)
 #write header
 end_line = info.shape[0] + 2
 worksheet.add_table(
-    'A2:L{}'.format(end_line),
-    {'style': None, 'columns': [{'header': '胎儿性别'}, {'header': '临床审核'},]}
+  'A2:L{}'.format(end_line),
+  {'style': None, 'columns': [{'header': '胎儿性别'}, {'header': '临床审核'},]}
 )
 cell_format = workbook.add_format({'align': 'center', 'valign': 'vcenter',
                                    'font_size': 12, 'font_name': 'SimSun',
@@ -997,10 +997,10 @@ worksheet.set_row(1, 20, cell_format)
 #write content
 start = 0
 for sample_id in info.index:
-    row_content = [gender.at[sample_id, 'Sex'], '']
-    worksheet.write_row('A{}'.format(start+3), row_content)
-    worksheet.set_row(start+2, 20, cell_format)
-    start += 1
+  row_content = [gender.at[sample_id, 'Sex'], '']
+  worksheet.write_row('A{}'.format(start+3), row_content)
+  worksheet.set_row(start+2, 20, cell_format)
+  start += 1
 #merge cells
 worksheet.merge_range('H3:H{}'.format(end_line), '')
 worksheet.merge_range('I3:I{}'.format(end_line), '')
@@ -1013,4 +1013,28 @@ worksheet.set_column('H:L', 8)
 
 workbook.close()
 endsnippet
+
+snippet conf.py "sphinx conf.py edit"
+# -- Customized --------------------------------------------------------------
+# add project path to sys.path
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../../src'))
+
+# edit theme
+html_theme = 'nature'
+
+# edit extension
+extensions += [
+	'sphinx.ext.autodoc', 'sphinx.ext.coverage',
+	'sphinx.ext.napoleon','sphinx.ext.intersphinx',
+]
+
+intersphinx_mapping = {
+	'python': ('https://docs.python.org/3',(None, 'python-inv.txt'))}
+
+endsnippet
+
+
 # vim:ft=snippets:
+
