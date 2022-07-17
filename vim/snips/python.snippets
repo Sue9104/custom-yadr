@@ -1019,15 +1019,16 @@ snippet conf.py "sphinx conf.py edit"
 # add project path to sys.path
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../src'))
+sys.path.insert(0, os.path.abspath('../../'))
 
 # edit theme
-html_theme = 'nature'
+html_theme = 'sphinx_book_theme'
 
 # edit extension
 extensions += [
-	'sphinx.ext.autodoc', 'sphinx.ext.coverage',
-	'sphinx.ext.napoleon','sphinx.ext.intersphinx',
+	'sphinx.ext.autodoc', 'sphinx.ext.autosummary',
+	'sphinx.ext.coverage', 'sphinx.ext.napoleon',
+	'sphinx.ext.intersphinx',
 ]
 
 intersphinx_mapping = {

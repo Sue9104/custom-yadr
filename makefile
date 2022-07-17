@@ -37,11 +37,11 @@ yadr:
 	[ -d $$HOME/.zsh.after ] || mkdir $$HOME/.zsh.after
 	\cp zsh.after/alias.zsh zsh.after/appearance.zsh $$HOME/.zsh.after/
 
-vim: yadr
+vim:
 	\cp vim/.vim* vim/.editorconfig	$$HOME/
 	[ -d $$HOME/.vim/ ] || mkdir $$HOME/.vim/ $$HOME/.vim/vundles/
 	\cp vim/vundles.vim $$HOME/.vim/
-	\sed -i '/neocomplete/d; /snipmate/d' $$HOME/.vim/vundles/*vundle
+	# \sed -i '/neocomplete/d; /snipmate/d' $$HOME/.vim/vundles/*vundle
 	\cp vim/vim-enhancements.vundle $$HOME/.vim/vundles/
 	$(call youcompleteme)
 	vim +PluginInstall +qall

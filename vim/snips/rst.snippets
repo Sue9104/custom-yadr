@@ -17,44 +17,40 @@ snippet comment "rst example"
    |name| in the content
 endsnippet
 
-snippet title "title"
+snippet part "part with overline"
 ##################################################
-Title
+Part
 ##################################################
 
+endsnippet
+
+snippet chapter "chapter"
+*********************************************
+Chapter
+*********************************************
+
+endsnippet
+
+snippet title "title"
+title
+========================================
 endsnippet
 
 snippet h1 "first header"
-**************************************************
 h1
-**************************************************
+-----------------------------------
 
 endsnippet
 
+
 snippet h2 "second header"
-==================================================
 h2
-==================================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 endsnippet
 
 snippet h3 "third header"
---------------------------------------------------
 h3
---------------------------------------------------
-
-endsnippet
-
-
-snippet h4 "fouth header"
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-h4
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-endsnippet
-
-snippet paragraph "paragraph"
-''''''''''''''''''''''''''''''''''''''''''''''''''
-Paragraph
-''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''
 endsnippet
 
 snippet flist "field list"
@@ -209,3 +205,18 @@ snippet warning
    Reader discretion is strongly advised.
 endsnippet
 
+snippet automodule "automodule settings"
+.. automodule:: mypkg
+   :members:
+   :no-undoc-members:
+   :inherited-members:
+
+endsnippet
+
+snippet autosummary "autosummary settings, package need to be installed"
+.. currentmodule:: mymodule
+.. autosummary::
+   :toctree: api
+   :nosignatures:
+
+endsnippet
