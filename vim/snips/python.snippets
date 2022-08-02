@@ -1100,5 +1100,39 @@ def results(request, position):
     except Primer.DoesNotExist:
         raise Http404("Primer does not exists")
 endsnippet
+
+snippet docopt "command line arguments"
+"""Program Name
+
+Usage:
+  $1.py ship <name> move <x> <y> [--speed=<kn>]
+  $1.py ship new <name>...
+  $1.py ship shoot <x> <y>
+  $1.py mine (set|remove) <x> <y> [--moored | --drifting]
+  $1.py (-h | --help)
+  $1.py --version
+
+Options:
+  -h --help     Show this screen.
+  --version     Show version.
+  --speed=<kn>  Speed in knots [default: 10].
+  --moored      Moored (anchored) mine.
+  --drifting    Drifting mine.
+
+"""
+from docopt import docopt
+
+
+if __name__ == '__main__':
+    arguments = docopt(__doc__, version='VersionNumber')
+    print(arguments)
+endsnippet
+
+endsnippet
+
+
+
+
+
 # vim:ft=snippets:
 

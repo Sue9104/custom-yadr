@@ -196,3 +196,27 @@ p <- add_argument(p, "number", help="number to round", type="numeric")
 p <- add_argument(p, "digits", help="number of decimal places", default=0)
 argv <- parse_args(p)
 endsnippet
+
+snippet docopt "command line arguments"
+'Program Name.
+
+Usage:
+   $1 ship new <name>...
+   $1 ship <name> move <x> <y> [--speed=<kn>]
+   $1 ship shoot <x> <y>
+   $1 mine (set|remove) <x> <y> [--moored|--drifting]
+   $1 -h | --help
+   $1 --version
+
+Options:
+  -h --help     Show this screen.
+  --version     Show version.
+  --speed=<kn>  Speed in knots [default: 10].
+  --moored      Moored (anchored) mine.
+  --drifting    Drifting mine.
+' -> doc
+
+library(docopt)
+arguments <- docopt(doc, version = 'VersionNumber')
+
+endsnippet
