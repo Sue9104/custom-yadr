@@ -44,3 +44,5 @@ let g:syntastic_check_on_wq = 0
 
 let g:syntastic_python_checkers = ['$HOME/miniconda/envs/test3/bin/pylint']
 
+" show all files in nerdtree
+let NERDTreeShowHidden=1

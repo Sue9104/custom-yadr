@@ -1,21 +1,35 @@
 # 设置R交互提示信息
-options(prompt="> ")
-options(continue="+ ")
+options(
+  prompt="> ",
+  continue="+ "
+)
 # 设置包的本地库（library）路径
 #.libPaths("C:/my_R_library")
+
 # 设置CRAN镜像默认地址
-local({r <- getOption("repos")
-r["CRAN"] <- "https://mirrors.ustc.edu.cn/CRAN/"
-options(repos=r)
-options(BioC_mirror="http://mirrors.ustc.edu.cn/bioc/")
+local({
+  r <- getOption("repos")
+  r["CRAN"] <- "https://mirrors.ustc.edu.cn/CRAN/"
+  options(repos=r)
+  options(BioC_mirror="http://mirrors.ustc.edu.cn/bioc/")
 })
 # 启动函数
 .First <- function(){
-#library(getopt)
-#source("http://bioconductor.org/biocLite.R")
-cat("\nWelcome at", date(), "\n")
+  cat("\nWelcome at", date(), "\n")
 }
 # 会话结束函数
 .Last <- function(){
-cat("\nGoodbye at ", date(), "\n")
+  cat("\nGoodbye at ", date(), "\n")
 }
+
+# options for devtools
+options(
+  usethis.full_name = "Min Su",
+  usethis.description = list(
+    `Authors@R` = 'person("Min", "Su", email = "sumin2012@163.com", role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0003-3933-6604"))',
+    License = "MIT + file LICENSE",
+    Version = "0.0.0.9000"
+  ),
+  usethis.protocol  = "ssh"
+)
