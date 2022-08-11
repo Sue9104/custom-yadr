@@ -223,8 +223,10 @@ endsnippet
 
 
 snippet mkdir "mkdir in R"
-dir.create(file.path($1, $2), showWarnings = FALSE)
-setwd(file.path($1, $2))
+$1 = file.path(1,2)
+if (!dir.exists(paths = dirname(path = $1))) {
+  dir.create(path = dirname(path = $1), recursive = TRUE)
+}
 endsnippet
 
 snippet r6 "creat refclass with docs"
@@ -363,3 +365,10 @@ snippet data "dataset with docs"
 #' @source \url{http://www.diamondse.info/}
 #' $1
 endsnippet
+
+snippet checkinstall "check if the packages are installed"
+if (!requireNamespace(c('$1'), quietly = TRUE)) {
+  stop("Cannot find $1", call. = FALSE)
+}
+endsnippet
+
