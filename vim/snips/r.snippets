@@ -313,6 +313,7 @@ snippet fn "function with docs"
 #'   description can span multiple lines.
 #' @param y A description of the parameter 'y'.
 #'
+#' @rdname file
 #' @export
 #'
 #' @seealso [prod()] for products, [cumsum()] for cumulative sums, and
@@ -372,3 +373,10 @@ if (!requireNamespace(c('$1'), quietly = TRUE)) {
 }
 endsnippet
 
+snippet include "include other scripts in r package"
+#' @include generics.R
+#' @import pkg
+#' @importFrom pkg fun1 fun2
+NULL
+
+endsnippet
