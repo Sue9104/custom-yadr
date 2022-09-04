@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-PLATFORM := $(shell uname)
+PLATFORM := $(shell lsb_release -d| awk  '{print $$2}')
 all: install update
 install: yadr python docker
 
@@ -7,7 +7,7 @@ install: yadr python docker
 
 define youcompleteme
 	if [ ! -d $$HOME/.vim/bundle/YouCompleteMe/ ]; then \
-		git config https.proxy http://127.0.0.1:12333;\
+		#git config https.proxy http://127.0.0.1:12333;\
 		git clone https://github.com/ycm-core/YouCompleteMe.git $$HOME/.vim/bundle/YouCompleteMe/;\
 	fi;
   cd $$HOME/.vim/bundle/YouCompleteMe/ && git submodule update --init --recursive && python3 install.py
@@ -27,9 +27,12 @@ endef
 
 
 yadr:
-	if [ "$(PLATFORM)" == "Linux" ]; then \
+	$(info "Current Operating System is $(PLATFORM)...")
+	if [ "$(PLATFORM)" == "Ubuntu" ]; then \
 		sudo apt install -y git rake zsh cmake python3-dev ;\
-	else \
+	elif [ "$(PLATFORM)" == "CentOS" ]; then \
+		echo "Need Root Permission!!!"; \
+	elif [ "$(shell uname)" == "Darwin" ]; then \
 		sudo brew install git rake zsh cmake python3-dev ;\
 	fi;
 	chmod +x config/install_yadr.sh && sh config/install_yadr.sh
@@ -52,7 +55,8 @@ snips:
 	\cp vim/snips/* $$HOME/.vim/bundle/vim-snippets/UltiSnips/
 
 python:
-	$(call miniconda)
+	ifeq (,$(shell which conda))
+		$(error "Please Install Anaconda first")
 	\cp config/.condarc $$HOME/.condarc
 	[ -d $$HOME/miniconda/envs/test3/ ] || $$HOME/miniconda/bin/conda create -y -n test3 python=3
 	source $$HOME/miniconda/bin/activate test3 && \
