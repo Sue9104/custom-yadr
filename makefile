@@ -90,7 +90,6 @@ nvm:
 	[ -s "$$HOME/.nvm/nvm.sh" ] && \. "$$HOME/.nvm/nvm.sh"
 	nvm install node cytoscape
 
-
 docker:
 	if [ "$(PLATFORM)" == "Linux" ]; then \
 		echo "please read https://docs.docker.com/install/linux/docker-ce/ubuntu/ for details" ;\
@@ -145,3 +144,12 @@ ubuntu:
 	gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 42
 	gsettings set org.gnome.shell.extensions.dash-to-dock unity-backlit-items true
 	gsettings set org.gnome.shell.extensions.dash-to-dock autohide-in-fullscreen true
+
+zsh:
+	wget -O $$HOME/Download/zsh.tar.xz https://sourceforge.net/projects/zsh/files/latest/download
+	mkdir $$HOME/Download/zsh && unxz $$HOME/Download/zsh.tar.xz && tar -xvf $$HOME/Download/zsh.tar -C $$HOME/Download/zsh --strip-components 1
+	cd $$HOME/Download/zsh && ./configure --prefix=$$HOME/local && make && make install
+
+luigid:
+	\cp -r ./config/luigid $$HOME/config/
+	sh $$HOME/config/luigid/luigid.sh
