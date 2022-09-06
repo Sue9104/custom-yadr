@@ -7,7 +7,6 @@ install: yadr python docker
 
 define youcompleteme
 	if [ ! -d $$HOME/.vim/bundle/YouCompleteMe/ ]; then \
-		#git config https.proxy http://127.0.0.1:12333;\
 		git clone https://github.com/ycm-core/YouCompleteMe.git $$HOME/.vim/bundle/YouCompleteMe/;\
 	fi;
   cd $$HOME/.vim/bundle/YouCompleteMe/ && git submodule update --init --recursive && python3 install.py
@@ -38,9 +37,10 @@ yadr:
 	chmod +x config/install_yadr.sh && sh config/install_yadr.sh
 	cd $$HOME/.yadr && git submodule update --init --recursive
 	[ -d $$HOME/.zsh.after ] || mkdir $$HOME/.zsh.after
-	\cp zsh.after/alias.zsh zsh.after/appearance.zsh $$HOME/.zsh.after/
+	\cp zsh.after/alias.zsh zsh.after/appearance.zsh zsh.after/userfunc.zsh $$HOME/.zsh.after/
 
 vim:
+	# set space indent
 	\cp vim/.vim* vim/.editorconfig	$$HOME/
 	[ -d $$HOME/.vim/ ] || mkdir $$HOME/.vim/ $$HOME/.vim/vundles/
 	\cp vim/vundles.vim $$HOME/.vim/
@@ -58,9 +58,8 @@ python:
 	ifeq (,$(shell which conda))
 		$(error "Please Install Anaconda first")
 	\cp config/.condarc $$HOME/.condarc
-	[ -d $$HOME/miniconda/envs/test3/ ] || $$HOME/miniconda/bin/conda create -y -n test3 python=3
-	source $$HOME/miniconda/bin/activate test3 && \
-		pip install -r config/python.packages
+	conda create -y -n test3 python=3
+	conda activate test3 && pip install -r config/python.packages
 	\cp zsh.after/python.zsh $$HOME/.zsh.after/
 
 rust:
@@ -112,6 +111,14 @@ docker:
 update:
 	cd $$HOME/.yadr && rake update
 
+git:
+	# git init
+	git config --global user.name Sue9104
+	git config --global user.email sumin2012@163.com
+	git config --global core.editor vim
+	# use git not https
+	git config --global url."git@github.com:".insteadOf "https://github.com/"
+
 ubuntu:
 	sudo apt update && sudo apt install -y build-essential git vim dconf-tools fcitx-bin fcitx-table dconf-cli uuid-runtime filezilla curl htop python python2.7-dev
 	# Chinese font
@@ -119,10 +126,6 @@ ubuntu:
 	sudo \cp -r win7fonts /usr/share/fonts/
 	sudo fc-cache -f -v
 	sudo apt install -f -y
-	# git init
-	git config --global user.name Sue9104
-	git config --global user.email sumin2012@163.com
-	git config --global core.editor vim
 	# chrome
 	wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P $$HOME/Downloads/
 	sudo dpkg -i $$HOME/Downloads/google-chrome-stable_current_amd64.deb
