@@ -1,1 +1,1 @@
-export PATH=$PATH:$HOME/anaconda3/bin
+export PATH=$PATH:$HOME/miniconda3/bin

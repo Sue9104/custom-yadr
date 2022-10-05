@@ -10,3 +10,7 @@ check-sys-info() {
   echo;
   df -h;
 }
+
+mamba-env(){
+  mamba activate $1 && export HOST=$(hostname);
+}

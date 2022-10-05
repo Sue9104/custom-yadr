@@ -1,5 +1,6 @@
 SHELL := /bin/bash
 PLATFORM := $(shell lsb_release -d| awk  '{print $$2}')
+OS := $(shell uname)
 all: install update
 install: yadr python docker
 
@@ -12,17 +13,17 @@ define youcompleteme
   cd $$HOME/.vim/bundle/YouCompleteMe/ && git submodule update --init --recursive && python3 install.py
 endef
 
-define miniconda
-  if [ ! -x "$$(command -v conda)" ]; then \
-		if [ "$(PLATFORM)" == "Linux" ]; then \
+miniconda:
+	if [ ! -x "$$(command -v conda)" ]; then \
+		if [ "$(shell uname)" == "Linux" ]; then \
 			wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -P $$HOME/Downloads;\
 			bash $$HOME/Downloads/Miniconda3-latest-Linux-x86_64.sh -b -f -p $$HOME/miniconda ; \
-		else \
+		elif [ "$(OS)" == "Darwin" ]; then \
 			wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -P $$HOME/Downloads;\
 			bash $$HOME/Downloads/Miniconda3-latest-MacOSX-x86_64.sh -b -f -p $$HOME/miniconda ; \
 		fi;\
 	fi;
-endef
+	conda install mamba ripgrep
 
 
 yadr:
@@ -31,7 +32,7 @@ yadr:
 		sudo apt install -y git rake zsh cmake python3-dev ;\
 	elif [ "$(PLATFORM)" == "CentOS" ]; then \
 		echo "Need Root Permission!!!"; \
-	elif [ "$(shell uname)" == "Darwin" ]; then \
+	elif [ "$(OS)" == "Darwin" ]; then \
 		sudo brew install git rake zsh cmake python3-dev ;\
 	fi;
 	chmod +x config/install_yadr.sh && sh config/install_yadr.sh
@@ -54,12 +55,12 @@ vim:
 snips:
 	\cp vim/snips/* $$HOME/.vim/bundle/vim-snippets/UltiSnips/
 
-python:
+python: miniconda
 	ifeq (,$(shell which conda))
-		$(error "Please Install Anaconda first")
+		$(error "Please Install conda first")
 	\cp config/.condarc $$HOME/.condarc
-	conda create -y -n test3 python=3
-	conda activate test3 && pip install -r config/python.packages
+	mamba create -y -n test3 python=3
+	mamba activate test3 && pip install -r config/python.packages
 	\cp zsh.after/python.zsh $$HOME/.zsh.after/
 
 rust:
@@ -71,9 +72,9 @@ rust:
 	cd $$HOME/.vim/bundle/YouCompleteMe/ && git submodule update --init --recursive && python install.py --rust-completer
 
 perl:
-	if [ "$(PLATFORM)" == "Linux" ]; then \
+	if [ "$(OS)" == "Linux" ]; then \
 		sudo apt-get install -y perl;\
-	else \
+	elif [ "$(OS)" == "Darwin" ]; then  \
 		sudo brew install perl;\
 	fi;
 	\cp zsh.after/perl.zsh $$HOME/.zsh.after/
