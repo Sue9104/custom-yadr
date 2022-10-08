@@ -1128,6 +1128,13 @@ if __name__ == '__main__':
     print(arguments)
 endsnippet
 
+snippet check "check if command exists"
+requires = []
+for cmd in requires:
+	if shutil.which(cmd) is None:
+		raise ModuleNotFoundError(f'{cmd} not found!!!')
+endsnippet
+
 
 
 

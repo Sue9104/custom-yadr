@@ -235,8 +235,73 @@ snippet s4 "create s4 class with docs"
 #' @slot $2 A length-one numeric vector
 #' @importClassesFrom package ClassA ClassB
 #' @importMethodsFrom package GenericA GenericB
-$1 <- setClass("$1",
-  slots = list($2 = "numeric")
+#' @export
+check_func <- function(object) {
+  errors <- character()
+  if (1) {
+    msg <- "Error"
+    errors <- c(errors, msg)
+  }
+  if (length(errors) == 0) TRUE else errors
+}
+setClass("$1",
+         representation($2 = "character", $3 = "numeric"),
+         prototype($2 = NA_character_, $3 = NA_real_),
+         #contains = "",
+         validity = check_func)
+endsnippet
+
+snippet s4func "add method to s4 class with docs"
+#' 16L: This is the title.
+#'
+#' @description
+#' This is the description.
+#'
+#' @details
+#' These are further details.
+#'
+#' @param x desc
+#' @param y desc
+#' @return Returns ddf
+#'
+#' @concept dfgd
+#' @importFrom pkg fun
+#' @export $1
+#'
+# func from existed
+$1 <- function(object) 0
+setGeneric("$1")
+
+# func from scratch
+setGeneric("$1", function(object) {
+  standardGeneric("$1")
+})
+setMethod("$1",
+          signature("$2"),
+          function(object) {
+            print(1)
+          }
+)
+endsnippet
+
+snippet s3detail "detail implemention of s3 method"
+#' @param x desc
+#' @rdname $1
+#' @importFrom pkg fun
+#' @export
+# func from existed
+func_name <- function(object) 0
+setGeneric("func_name")
+
+# func from scratch
+setGeneric("func_name", function(object) {
+  standardGeneric("func_name")
+})
+setMethod("func_name",
+          signature("Obj1"),
+          function(object) {
+            print(1)
+          }
 )
 endsnippet
 

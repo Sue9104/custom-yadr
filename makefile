@@ -1,5 +1,4 @@
 SHELL := /bin/bash
-PLATFORM := $(shell lsb_release -d| awk  '{print $$2}')
 OS := $(shell uname)
 all: install update
 install: yadr python docker
@@ -28,9 +27,9 @@ miniconda:
 
 yadr:
 	$(info "Current Operating System is $(PLATFORM)...")
-	if [ "$(PLATFORM)" == "Ubuntu" ]; then \
+	if [ "$(shell lsb_release -d| awk '{print $$2}')" == "Ubuntu" ]; then \
 		sudo apt install -y git rake zsh cmake python3-dev ;\
-	elif [ "$(PLATFORM)" == "CentOS" ]; then \
+	elif [ "$(shell lsb_release -d| awk '{print $$2}')" == "CentOS" ]; then \
 		echo "Need Root Permission!!!"; \
 	elif [ "$(OS)" == "Darwin" ]; then \
 		sudo brew install git rake zsh cmake python3-dev ;\
@@ -92,7 +91,7 @@ nvm:
 	nvm install node cytoscape
 
 docker:
-	if [ "$(PLATFORM)" == "Linux" ]; then \
+	if [ "$(shell lsb_release -d| awk '{print $$2}')" == "Ubuntu" ]; then \
 		echo "please read https://docs.docker.com/install/linux/docker-ce/ubuntu/ for details" ;\
   	sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common ;\
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - ;\
