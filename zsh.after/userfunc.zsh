@@ -14,3 +14,6 @@ check-sys-info() {
 mamba-env(){
   mamba activate $1 && export HOST=$(hostname);
 }
+mamba-export(){
+  mamba env export -n $1 --no-builds | grep -v "prefix"
+}
