@@ -16,14 +16,16 @@ miniconda:
 	if [ ! -x "$$(command -v conda)" ]; then \
 		if [ "$(shell uname)" == "Linux" ]; then \
 			wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -P $$HOME/Downloads;\
-			bash $$HOME/Downloads/Miniconda3-latest-Linux-x86_64.sh -b -f -p $$HOME/miniconda ; \
+			bash $$HOME/Downloads/Miniconda3-latest-Linux-x86_64.sh -b -f -p $$HOME/miniconda3 ; \
 		elif [ "$(OS)" == "Darwin" ]; then \
 			wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -P $$HOME/Downloads;\
 			bash $$HOME/Downloads/Miniconda3-latest-MacOSX-x86_64.sh -b -f -p $$HOME/miniconda ; \
 		fi;\
 	fi;
-	conda install mamba ripgrep
 
+mamba:
+	wget "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
+	bash Mambaforge-$(uname)-$(uname -m).sh
 
 yadr:
 	$(info "Current Operating System is $(PLATFORM)...")
@@ -54,13 +56,14 @@ vim:
 snips:
 	\cp vim/snips/* $$HOME/.vim/bundle/vim-snippets/UltiSnips/
 
-python: miniconda
+python: miniconda mamba
 	ifeq (,$(shell which conda))
 		$(error "Please Install conda first")
 	\cp config/.condarc $$HOME/.condarc
+	\cp zsh.after/python.zsh $$HOME/.zsh.after/
+	mamba install -c conda-forge ripgrep
 	mamba create -y -n test3 python=3
 	mamba activate test3 && pip install -r config/python.packages
-	\cp zsh.after/python.zsh $$HOME/.zsh.after/
 
 rust:
 	curl https://sh.rustup.rs -sSf | sh
