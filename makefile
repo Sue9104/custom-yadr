@@ -21,12 +21,15 @@ miniconda:
 			wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -P $$HOME/Downloads;\
 			bash $$HOME/Downloads/Miniconda3-latest-MacOSX-x86_64.sh -b -f -p $$HOME/miniconda ; \
 		fi;\
+		conda init zsh; \
 	fi;
 
 mamba:
-	wget "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
-	bash Mambaforge-$(uname)-$(uname -m).sh
-
+	#wget "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
+	#bash Mambaforge-$(uname)-$(uname -m).sh
+	conda install mamba -n base -c conda-forge
+	mamba init zsh
+	
 yadr:
 	$(info "Current Operating System is $(PLATFORM)...")
 	if [ "$(shell lsb_release -d| awk '{print $$2}')" == "Ubuntu" ]; then \
