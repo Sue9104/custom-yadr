@@ -9,22 +9,21 @@ define youcompleteme
 	if [ ! -d $$HOME/.vim/bundle/YouCompleteMe/ ]; then \
 		git clone https://github.com/ycm-core/YouCompleteMe.git $$HOME/.vim/bundle/YouCompleteMe/;\
 	fi;
-  cd $$HOME/.vim/bundle/YouCompleteMe/ && git submodule update --init --recursive && python3 install.py
+  cd $$HOME/.vim/bundle/YouCompleteMe/ \
+		&& git submodule update --init --recursive \
+		&& python3 install.py
 endef
 
 miniconda:
 	if [ ! -x "$$(command -v conda)" ]; then \
-		if [ "$(shell uname)" == "Linux" ]; then \
-			wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -P $$HOME/Downloads;\
-			bash $$HOME/Downloads/Miniconda3-latest-Linux-x86_64.sh -b -f -p $$HOME/miniconda3 ; \
-		elif [ "$(OS)" == "Darwin" ]; then \
-			wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -P $$HOME/Downloads;\
-			bash $$HOME/Downloads/Miniconda3-latest-MacOSX-x86_64.sh -b -f -p $$HOME/miniconda ; \
-		fi;\
-		conda init zsh; \
+		wget https://repo.continuum.io/miniconda/Miniconda3-latest-$(OS)-x86_64.sh -P $$HOME/;\
+		bash $$HOME/Miniconda3-latest-$(OS)-x86_64.sh -b -f -p $$HOME/miniconda3 ; \
+		rm $$HOME/Miniconda3-latest-$(OS)-x86_64.sh ;\
+		$$HOME/miniconda3/bin/conda init zsh; \
+		exec zsh; \
 	fi;
 
-mamba:
+mamba: miniconda
 	#wget "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
 	#bash Mambaforge-$(uname)-$(uname -m).sh
 	conda install mamba -n base -c conda-forge
@@ -65,8 +64,7 @@ python: miniconda mamba
 	\cp config/.condarc $$HOME/.condarc
 	\cp zsh.after/python.zsh $$HOME/.zsh.after/
 	mamba install -c conda-forge ripgrep
-	mamba create -y -n test3 python=3
-	mamba activate test3 && pip install -r config/python.packages
+	mamba install pandas jupyter sphinx pylint
 
 rust:
 	curl https://sh.rustup.rs -sSf | sh
@@ -159,3 +157,19 @@ zsh:
 luigid:
 	\cp -r ./config/luigid $$HOME/config/
 	sh $$HOME/config/luigid/luigid.sh
+
+brew:
+	xcode-select --install
+	export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+	export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+	export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
+	# install from mirror
+	git clone --depth=1 https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/install.git brew-install
+	/bin/bash brew-install/install.sh
+	rm -rf brew-install
+	# install from offical repo
+	#/bin/bash -c "$(curl -fsSL https://github.com/Homebrew/install/raw/master/install.sh)"
+	# install tools
+	brew install git wget htop cmake
+
+install: vim python rust r
