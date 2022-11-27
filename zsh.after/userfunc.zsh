@@ -17,3 +17,7 @@ mamba-env(){
 mamba-export(){
   mamba env export -n $1 --no-builds | grep -v "prefix"
 }
+ssh-key(){
+  ssh-keygen -t rsa -b 4096 -C "sumin2012@163.com"
+  echo ssh-copy-id -i $HOME/.ssh/id_rsa.pub  -p 22 user@host
+}
