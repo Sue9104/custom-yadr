@@ -8,10 +8,8 @@ options(
 
 # 设置CRAN镜像默认地址
 local({
-  r <- getOption("repos")
-  r["CRAN"] <- "https://mirrors.ustc.edu.cn/CRAN/"
-  options(repos=r)
-  options(BioC_mirror="http://mirrors.ustc.edu.cn/bioc/")
+  options(repos = c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
+  #options(BioC_mirror="https://mirrors.nju.edu.cn/bioconductor/")
 })
 # 启动函数
 .First <- function(){

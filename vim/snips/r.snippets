@@ -427,12 +427,6 @@ snippet data "dataset with docs"
 #' $1
 endsnippet
 
-snippet checkinstall "check if the packages are installed"
-if (!requireNamespace(c('$1'), quietly = TRUE)) {
-  stop("Cannot find $1", call. = FALSE)
-}
-endsnippet
-
 snippet include "include other scripts in r package"
 #' @include generics.R
 #' @import pkg
@@ -440,3 +434,63 @@ snippet include "include other scripts in r package"
 NULL
 
 endsnippet
+
+snippet installpackage "install R packages"
+#  Packages installed using bioconductor
+pkg_bioc = c("","")
+#  Packages installed using CRAN
+pkg_cran = c("","")
+#  Packages installed using github
+pkg_gthb = c("")
+pkg_gthb_install = c("/")
+
+installation = FALSE
+tryCatch(
+  expr = {
+    v = as.numeric(paste0(R.Version()$major, R.Version()$minor)) #36.6
+
+    if(v < 35){
+      if (length(setdiff(pkg_cran, rownames(installed.packages()))) > 0) {
+        install.packages(setdiff(pkg_cran, rownames(installed.packages())),repos = "https://cloud.r-project.org/")
+      }
+      if (length(setdiff(pkg_bioc, rownames(installed.packages()))) > 0) {
+        source("http://www.bioconductor.org/biocLite.R")
+        biocLite(setdiff(pkg_bioc, rownames(installed.packages())), suppressUpdates=TRUE)
+      }
+      if (length(setdiff(pkg_gthb, rownames(installed.packages()))) > 0) {
+        library(devtools)
+        devtools::install_github(setdiff(pkg_gthb_install, rownames(installed.packages())))
+      }
+      installation = TRUE
+    }else{
+      pkg_cran = c("BiocManager", pkg_cran)
+      if (length(setdiff(pkg_cran, rownames(installed.packages()))) > 0) {
+        install.packages(setdiff(pkg_cran, rownames(installed.packages())), repos = "https://cloud.r-project.org/")
+      }
+      if (length(setdiff(pkg_bioc, rownames(installed.packages()))) > 0) {
+        lst = setdiff(pkg_bioc, rownames(installed.packages()))
+        for(p in lst){
+          library(BiocManager)
+          BiocManager::install(p, ask=FALSE)
+        }
+      }
+      if (length(setdiff(pkg_gthb, rownames(installed.packages()))) > 0) {
+        library(devtools)
+        devtools::install_github(setdiff(pkg_gthb_install, rownames(installed.packages())), quiet = T)
+      }
+    }
+    installation = TRUE
+  },
+  error = function(e){
+    installation = FALSE
+  }
+)
+message(installation)
+endsnippet
+
+snippet installcheck "check if the packages are installed"
+if (!requireNamespace(c('$1'), quietly = TRUE)) {
+  stop("Cannot find $1", call. = FALSE)
+}
+endsnippet
+
