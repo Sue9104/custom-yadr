@@ -49,3 +49,4 @@ let NERDTreeShowHidden=1
 
 " set listchar
 set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+set nolist

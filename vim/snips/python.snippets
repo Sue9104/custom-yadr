@@ -1135,9 +1135,61 @@ for cmd in requires:
 		raise ModuleNotFoundError(f'{cmd} not found!!!')
 endsnippet
 
+snippet rule "snake rule"
+rule all:
+	input:
+		"aa"
 
+rule a:
+		input:
+        #expand("{dataset}.sorted.txt", dataset=DATASETS)
+        #rules.b.output
+        "a"
+    output:
+        #protected("a.qsub") # large data
+        #ensure("test.txt", non_empty=True)
+        #touch("mytask.done") # flag file
+        "aa"
+    params: a=1
+    log: "logs/test.log"
+    threads: 4
+    resources: mem_mb=100
+    #conda: "envs/mycommand.yaml"
+    shell:
+        "echo ${a} > {output}"
+    #run: print(f"{input} {output}")
+    #script:
+        # Python: snakemake.input[0]
+        # R: nakemake@input[[1]]
+        # shell: ${snakemake_wildcards[sample]}, ${snakemake[threads]}
+        #"scripts/myscript.py"
+    #wrapper:
+        #"0.2.0/bio/samtools/sort"
+onsuccess:
+    print("Workflow finished, no error")
+    shell("echo Succeed~| mail -s 'an error occurred' sumin2012@163.com")
+onerror:
+    print("Error occured")
+    shell("echo Succeed~| mail -s 'an error occurred' sumin2012@163.com < {log}")
+endsnippet
 
+snippet envvars "snake envvars"
+envvars:
+    "SOME_VARIABLE"
+os.environ["SOME_VARIABLE"]
+endsnippet
 
+snippet module "snake module"
+configfile: "config/config.yaml"
+module $1:
+    snakefile:
+        #"https://github.com/snakemake-workflows/dna-seq-gatk-variant-calling/raw/v2.0.1/Snakefile"
+				#github("snakemake-workflows/dna-seq-gatk-variant-calling", path="workflow/Snakefile", tag="v2.0.1")
+    config:
+        config
+
+use rule * from $1 as $1_*
+endsnippet
 
 # vim:ft=snippets:
 
